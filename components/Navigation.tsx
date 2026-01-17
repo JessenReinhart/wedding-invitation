@@ -33,10 +33,10 @@ export const Navigation: React.FC = () => {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-6 md:px-12 text-wine bg-ivory/80 backdrop-blur-sm border-b border-wine/10"
     >
-      <div className="text-sm font-sans tracking-widest uppercase font-bold">
-        V & J
+      <div className="text-2xl font-display font-bold text-wine tracking-tighter">
+        V&J
       </div>
-      
+
       <div className="hidden md:flex gap-8">
         {NAV_ITEMS.map((item) => (
           <a
