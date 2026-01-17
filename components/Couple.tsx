@@ -22,12 +22,19 @@ export const Couple: React.FC = () => {
                     className="flex flex-col items-center md:items-end text-center md:text-right"
                 >
                     <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine-light mb-6">{t('couple.brideTitle')}</span>
-                    <h2 className="font-display text-4xl md:text-6xl text-wine mb-4 leading-none">
-                        Alvita<br />Fabiola<br />Aprilia
+                    <h2 className="font-display text-5xl md:text-7xl text-wine mb-2 leading-none">
+                        VITA
                     </h2>
+                    <p className="font-sans text-xs tracking-[0.2em] uppercase text-wine-dark mb-4">
+                        Alvita Fabiola Aprilia
+                    </p>
                     <div className="w-12 h-px bg-wine/30 my-6"></div>
-                    <p className="font-serif italic text-xl text-wine-dark/80">{t('couple.daughterOf')}</p>
-                    <p className="font-sans text-sm tracking-widest uppercase mt-2 text-wine-light">18 April 1998</p>
+                    <div className="font-serif italic text-base md:text-lg text-wine-dark/80 space-y-1">
+                        {t('couple.daughterOf').split('\n').map((line, i) => (
+                            <p key={i}>{line}</p>
+                        ))}
+                    </div>
+
                 </motion.div>
 
                 {/* Divider for Desktop */}
@@ -42,12 +49,19 @@ export const Couple: React.FC = () => {
                     className="flex flex-col items-center md:items-start text-center md:text-left"
                 >
                     <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine-light mb-6">{t('couple.groomTitle')}</span>
-                    <h2 className="font-display text-4xl md:text-6xl text-wine mb-4 leading-none">
-                        Muhammad<br />Jessen Reinhart<br />Sugiarto
+                    <h2 className="font-display text-5xl md:text-7xl text-wine mb-2 leading-none">
+                        JESSEN
                     </h2>
+                    <p className="font-sans text-xs tracking-[0.2em] uppercase text-wine-dark mb-4">
+                        Muhammad Jessen Reinhart Sugiarto
+                    </p>
                     <div className="w-12 h-px bg-wine/30 my-6"></div>
-                    <p className="font-serif italic text-xl text-wine-dark/80">{t('couple.sonOf')}</p>
-                    <p className="font-sans text-sm tracking-widest uppercase mt-2 text-wine-light">12 Juni 1996</p>
+                    <div className="font-serif italic text-base md:text-lg text-wine-dark/80 space-y-1">
+                        {t('couple.sonOf').split('\n').map((line, i) => (
+                            <p key={i}>{line}</p>
+                        ))}
+                    </div>
+
                 </motion.div>
 
             </div>

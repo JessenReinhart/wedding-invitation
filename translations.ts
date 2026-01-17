@@ -7,6 +7,7 @@ export const translations = {
             location: 'Lokasi',
             event: 'Acara',
             rsvp: 'Konfirmasi',
+            gift: 'Hadiah',
         },
         hero: {
             location: 'Jakarta',
@@ -15,9 +16,9 @@ export const translations = {
         },
         couple: {
             brideTitle: 'Mempelai Wanita',
-            daughterOf: 'Putri dari Almarhum Tommy Sitorus dan Ibu Sri Djuhariah',
+            daughterOf: 'Putri dari\nAlmarhum Tommy Sitorus\n&\nSri Djuhariah',
             groomTitle: 'Mempelai Pria',
-            sonOf: 'Putra dari Almarhum Sugiarto Seno dan Yessy Wahyuni',
+            sonOf: 'Putra dari\nAlmarhum Sugiarto Seno\n&\nYessy Wahyuni',
         },
         venue: {
             title: 'Lokasi',
@@ -71,6 +72,15 @@ export const translations = {
             gift: 'Hadiah',
             accommodation: 'Akomodasi',
             contact: 'Kontak',
+        },
+        gift: {
+            title: 'Wedding Gift',
+            description: 'Doa restu Anda merupakan karunia terindah bagi kami. Namun, jika Anda ingin memberikan tanda kasih, kami menyediakan \'Digital Envelope\' untuk memudahkan Anda.',
+            bankName: 'Bank Jago',
+            accountName: 'Muhammad Jessen Reinhart S',
+            accountNumber: '104226176041',
+            copyButton: 'Salin No. Rekening',
+            copied: 'Tersalin!',
         }
     },
     en: {
@@ -79,6 +89,7 @@ export const translations = {
             location: 'Location',
             event: 'Events',
             rsvp: 'RSVP',
+            gift: 'Gift',
         },
         hero: {
             location: 'Jakarta',
@@ -87,9 +98,9 @@ export const translations = {
         },
         couple: {
             brideTitle: 'The Bride',
-            daughterOf: 'Daughter of the late Tommy Sitorus and Mrs. Sri Djuhariah',
+            daughterOf: 'Daughter of\nthe late Tommy Sitorus\n&\nMrs. Sri Djuhariah',
             groomTitle: 'The Groom',
-            sonOf: 'Son of the late Sugiarto Seno and Yessy Wahyuni',
+            sonOf: 'Son of\nthe late Sugiarto Seno\n&\nYessy Wahyuni',
         },
         venue: {
             title: 'Location',
@@ -143,6 +154,15 @@ export const translations = {
             gift: 'Gift',
             accommodation: 'Accommodation',
             contact: 'Contact',
+        },
+        gift: {
+            title: 'Wedding Gift',
+            description: 'Your blessing is the greatest gift for us. However, if you wish to give a token of love, we provide a \'Digital Envelope\' for your convenience.',
+            bankName: 'Bank Jago',
+            accountName: 'Muhammad Jessen Reinhart S',
+            accountNumber: '104226176041',
+            copyButton: 'Copy Account Number',
+            copied: 'Copied!',
         }
     },
     ko: {
@@ -151,6 +171,7 @@ export const translations = {
             location: '장소',
             event: '일정',
             rsvp: '참석 여부',
+            gift: '축의금',
         },
         hero: {
             location: '자카르타',
@@ -159,9 +180,9 @@ export const translations = {
         },
         couple: {
             brideTitle: '신부',
-            daughterOf: '故 토미 시토루스와 스리 주하리아 여사의 딸',
+            daughterOf: '故 토미 시토루스와\n스리 주하리아 여사의\n딸',
             groomTitle: '신랑',
-            sonOf: '故 수기아르토 세노와 예시 와유니의 아들',
+            sonOf: '故 수기아르토 세노와\n예시 와유니의\n아들',
         },
         venue: {
             title: '장소',
@@ -215,6 +236,15 @@ export const translations = {
             gift: '선물',
             accommodation: '숙박',
             contact: '연락처',
+        },
+        gift: {
+            title: '축의금',
+            description: '저희의 새로운 시작을 축복해 주시는 마음만으로도 충분히 감사합니다. 축하의 마음을 전하고 싶으신 분들을 위해 계좌 번호를 안내해 드립니다.',
+            bankName: 'Bank Jago',
+            accountName: 'Muhammad Jessen Reinhart S',
+            accountNumber: '104226176041',
+            copyButton: '계좌 번호 복사',
+            copied: '복사됨!',
         }
     }
 };

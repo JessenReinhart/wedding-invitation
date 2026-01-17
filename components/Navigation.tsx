@@ -29,6 +29,7 @@ export const Navigation: React.FC = () => {
     { label: t('nav.location'), href: '#venue' },
     { label: t('nav.event'), href: '#event' },
     { label: t('nav.rsvp'), href: '#rsvp' },
+    { label: t('nav.gift'), href: '#gift' },
   ];
 
   return (
@@ -39,13 +40,13 @@ export const Navigation: React.FC = () => {
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-6 md:px-12 text-wine bg-ivory/80 backdrop-blur-sm border-b border-wine/10"
+      className="fixed top-0 left-0 w-full z-50 flex justify-between md:grid md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 md:px-12 text-wine bg-ivory/80 backdrop-blur-sm border-b border-wine/10"
     >
-      <div className="text-2xl font-display font-bold text-wine tracking-tighter">
+      <div className="text-2xl font-display font-bold text-wine tracking-tighter md:justify-self-start">
         V&J
       </div>
 
-      <div className="hidden md:flex gap-8">
+      <div className="hidden md:flex gap-8 md:justify-self-center">
         {navItems.map((item) => (
           <a
             key={item.href}
@@ -58,7 +59,7 @@ export const Navigation: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex items-center gap-4 md:gap-6">
+      <div className="flex items-center gap-4 md:gap-6 md:justify-self-end">
         <div className="hidden md:block text-sm font-sans tracking-widest uppercase">
           02.05.26
         </div>

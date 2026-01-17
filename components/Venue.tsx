@@ -63,7 +63,7 @@ export const Venue: React.FC = () => {
               style={{ scale: imageScale }}
               initial={{ filter: "blur(0px) sepia(0) grayscale(0)" }}
               whileInView={{ filter: "blur(4px) sepia(0.2) grayscale(1)" }}
-              transition={{ duration: 2, delay: 0.2 }}
+              transition={{ duration: 2, delay: 1 }}
               src="/images/venue-bg.jpg"
               alt="Amanaia Menteng Architecture"
               className="w-full h-full object-cover grayscale opacity-50 sepia-[.2]"
@@ -74,7 +74,7 @@ export const Venue: React.FC = () => {
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
                 className="font-serif italic text-3xl md:text-5xl text-center leading-relaxed text-ivory max-w-2xl"
               >
                 {t('venue.quote')}
