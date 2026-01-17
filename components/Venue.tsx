@@ -13,7 +13,7 @@ export const Venue: React.FC = () => {
   const clipPathInset = useTransform(
     scrollYProgress,
     [0.1, 0.5],
-    ["15%", "0%"]
+    ["5%", "0%"]
   );
 
   const imageScale = useTransform(
@@ -24,7 +24,7 @@ export const Venue: React.FC = () => {
 
   return (
     <section id="venue" ref={ref} className="relative min-h-screen w-full bg-wine text-ivory py-24 md:py-32 flex flex-col items-center">
-      <div className="w-full max-w-[90%] md:max-w-6xl px-4 md:px-0 z-10">
+      <div className="w-full px-4 md:max-w-6xl md:px-0 z-10">
 
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 border-b border-ivory/20 pb-8">
