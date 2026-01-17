@@ -2,9 +2,11 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Map from './Map';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Venue: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -35,7 +37,7 @@ export const Venue: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="font-display text-5xl md:text-7xl uppercase tracking-tight"
           >
-            Lokasi
+            {t('venue.title')}
           </motion.h2>
           <motion.div
             initial={{ opacity: 0 }}
@@ -45,7 +47,7 @@ export const Venue: React.FC = () => {
             className="mt-6 md:mt-0 text-right font-sans font-light text-sm md:text-base tracking-widest text-ivory/70"
           >
             <p>AMANAIA MENTENG</p>
-            <p>JAKARTA, INDONESIA</p>
+            <p>{t('venue.city')}</p>
           </motion.div>
         </div>
 
@@ -75,7 +77,7 @@ export const Venue: React.FC = () => {
                 transition={{ duration: 0.8, delay: 0.8 }}
                 className="font-serif italic text-3xl md:text-5xl text-center leading-relaxed text-ivory max-w-2xl"
               >
-                "Keanggunan dalam kesederhanaan, sebuah ruang untuk merayakan cinta yang abadi."
+                {t('venue.quote')}
               </motion.p>
             </div>
           </motion.div>
@@ -88,10 +90,10 @@ export const Venue: React.FC = () => {
           </div>
           <div className="font-sans font-light text-lg md:text-xl text-ivory/80 leading-relaxed">
             <p className="mb-8">
-              Amanaia Menteng menjadi saksi penyatuan janji suci kami. Dengan arsitektur yang memadukan kekuatan struktur dan kelembutan alam, tempat ini melambangkan fondasi hubungan kami yang kokoh namun terus bertumbuh dengan indah.
+              {t('venue.description1')}
             </p>
             <p>
-              Prosesi Akad Nikah akan dilangsungkan dengan khidmat di area taman, menyatu dengan alam, dilanjutkan dengan perayaan hangat bersama orang-orang terkasih.
+              {t('venue.description2')}
             </p>
           </div>
         </div>
@@ -99,9 +101,9 @@ export const Venue: React.FC = () => {
         {/* Map Section */}
         <div className="mt-24 w-full">
           <div className="flex flex-col items-start text-left mb-10">
-            <h3 className="font-display text-3xl md:text-4xl uppercase tracking-wide mb-6">Petunjuk Arah</h3>
+            <h3 className="font-display text-3xl md:text-4xl uppercase tracking-wide mb-6">{t('venue.directions')}</h3>
             <p className="font-sans font-light text-ivory/80 max-w-lg leading-relaxed mb-8">
-              Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10410
+              {t('venue.address')}
             </p>
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=-6.179173700072192,106.84046081165128"
@@ -110,11 +112,11 @@ export const Venue: React.FC = () => {
               className="group relative px-8 py-4 bg-ivory text-wine font-sans uppercase tracking-widest text-sm font-bold overflow-hidden inline-block"
             >
               <span className="relative z-10 flex items-center gap-2 group-hover:gap-4 transition-all">
-                Buka Google Maps <ArrowRight size={16} />
+                {t('venue.openMap')} <ArrowRight size={16} />
               </span>
               <div className="absolute inset-0 bg-wine-light transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
               <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 group-hover:gap-4 transition-all opacity-0 group-hover:opacity-100 text-ivory pointer-events-none">
-                Buka Google Maps <ArrowRight size={16} />
+                {t('venue.openMap')} <ArrowRight size={16} />
               </span>
             </a>
           </div>

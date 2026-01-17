@@ -1,9 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ITINERARY_ITEMS } from '../constants';
 import { Clock } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Event: React.FC = () => {
+  const { t } = useLanguage();
+  const itineraryItems = t('event.items') as any[]; // Cast to array
+
   return (
     <section id="event" className="relative w-full bg-ivory py-32 md:py-48 px-4 md:px-12">
       <div className="max-w-7xl mx-auto">
@@ -14,13 +17,13 @@ export const Event: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center mb-24"
         >
-          <h2 className="font-display text-wine text-6xl md:text-8xl mb-4 text-center">Susunan Acara</h2>
+          <h2 className="font-display text-wine text-6xl md:text-8xl mb-4 text-center">{t('event.title')}</h2>
           <div className="h-24 w-px bg-wine/20 mb-4"></div>
-          <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine">02 Mei 2026</span>
+          <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine">{t('event.date')}</span>
         </motion.div>
 
         <div className="grid grid-cols-1 border-t border-wine/10">
-          {ITINERARY_ITEMS.map((item, index) => (
+          {Array.isArray(itineraryItems) && itineraryItems.map((item, index) => (
             <ItineraryRow key={index} item={item} index={index} />
           ))}
         </div>
@@ -29,14 +32,13 @@ export const Event: React.FC = () => {
         <div className="mt-32 p-8 md:p-16 bg-wine/5 border border-wine/10 text-center relative overflow-hidden group">
           <div className="absolute inset-0 bg-wine/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left ease-[0.16,1,0.3,1]"></div>
           <div className="relative z-10">
-            <h3 className="font-serif text-2xl md:text-4xl italic mb-6 text-wine">Busana: Formal & Elegan</h3>
+            <h3 className="font-serif text-2xl md:text-4xl italic mb-6 text-wine">{t('event.dressCodeTitle')}</h3>
             <p className="font-sans text-wine-light max-w-lg mx-auto space-y-4">
               <span className="block">
-                Kami mengharapkan kehadiran Anda dengan balutan busana berwarna netral atau earth tone.
-                Sentuhan merah anggur (wine) sangat diapresiasi untuk menyelaraskan suasana.
+                {t('event.dressCodeDesc1')}
               </span>
               <span className="block font-medium text-wine/80">
-                Bagi tamu wanita, dimohon untuk menghindari busana berwarna Ivory atau Broken White.
+                {t('event.dressCodeDesc2')}
               </span>
             </p>
           </div>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { NAV_ITEMS } from '../constants';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const Navigation: React.FC = () => {
   const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
+  const { language, setLanguage, t } = useLanguage();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() || 0;
@@ -23,6 +24,13 @@ export const Navigation: React.FC = () => {
     }
   };
 
+  const navItems = [
+    { label: t('nav.bride'), href: '#hero' }, // Using #hero for Bride as it is the top section often or closely related, originally #hero in constants
+    { label: t('nav.location'), href: '#venue' },
+    { label: t('nav.event'), href: '#event' },
+    { label: t('nav.rsvp'), href: '#rsvp' },
+  ];
+
   return (
     <motion.nav
       variants={{
@@ -38,9 +46,9 @@ export const Navigation: React.FC = () => {
       </div>
 
       <div className="hidden md:flex gap-8">
-        {NAV_ITEMS.map((item) => (
+        {navItems.map((item) => (
           <a
-            key={item.label}
+            key={item.href}
             href={item.href}
             onClick={(e) => scrollToSection(e, item.href)}
             className="text-xs font-sans tracking-[0.2em] uppercase hover:opacity-50 transition-opacity duration-300"
@@ -50,8 +58,32 @@ export const Navigation: React.FC = () => {
         ))}
       </div>
 
-      <div className="text-sm font-sans tracking-widest uppercase">
-        02.05.26
+      <div className="flex items-center gap-4 md:gap-6">
+        <div className="hidden md:block text-sm font-sans tracking-widest uppercase">
+          02.05.26
+        </div>
+        <div className="flex gap-2 text-xs font-sans tracking-wider items-center">
+          <button
+            onClick={() => setLanguage('id')}
+            className={`hover:opacity-100 transition-opacity ${language === 'id' ? 'font-bold opacity-100' : 'opacity-50'}`}
+          >
+            ID
+          </button>
+          <span className="opacity-30">|</span>
+          <button
+            onClick={() => setLanguage('en')}
+            className={`hover:opacity-100 transition-opacity ${language === 'en' ? 'font-bold opacity-100' : 'opacity-50'}`}
+          >
+            EN
+          </button>
+          <span className="opacity-30">|</span>
+          <button
+            onClick={() => setLanguage('ko')}
+            className={`hover:opacity-100 transition-opacity ${language === 'ko' ? 'font-bold opacity-100' : 'opacity-50'}`}
+          >
+            KO
+          </button>
+        </div>
       </div>
     </motion.nav>
   );
