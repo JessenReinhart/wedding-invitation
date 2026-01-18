@@ -98,7 +98,7 @@ export const translations = {
         },
         couple: {
             brideTitle: 'The Bride',
-            daughterOf: 'Daughter of\nthe late Tommy Sitorus\n&\nMrs. Sri Djuhariah',
+            daughterOf: 'Daughter of\nthe late Tommy Sitorus\n&\nSri Djuhariah',
             groomTitle: 'The Groom',
             sonOf: 'Son of\nthe late Sugiarto Seno\n&\nYessy Wahyuni',
         },

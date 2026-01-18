@@ -35,7 +35,7 @@ export const Gift: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="font-serif italic text-2xl md:text-3xl text-wine/80 leading-relaxed max-w-3xl mx-auto mb-16"
+                    className="font-serif italic text-xl md:text-2xl text-wine/80 leading-relaxed max-w-3xl mx-auto mb-16"
                 >
                     {t.description}
                 </motion.p>
