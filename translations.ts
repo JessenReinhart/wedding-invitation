@@ -8,6 +8,7 @@ export const translations = {
             event: 'Acara',
             rsvp: 'Konfirmasi',
             gift: 'Hadiah',
+            registry: 'Registri',
         },
         hero: {
             location: 'Jakarta',
@@ -81,6 +82,20 @@ export const translations = {
             accountNumber: '104226176041',
             copyButton: 'Salin No. Rekening',
             copied: 'Tersalin!',
+        },
+        registry: {
+            title: 'Wedding Registry',
+            description: 'Kehadiran Anda adalah hadiah terbesar. Namun, jika Anda ingin memberikan sesuatu yang spesial, berikut adalah daftar keinginan kami.',
+            viewItem: 'Lihat Produk',
+            markAsBought: 'Tandai Sudah Dibeli',
+            purchased: 'Sudah Dibeli ✓',
+            confirmTitle: 'Konfirmasi Pembelian',
+            confirmDesc: 'Masukkan nama Anda untuk menandai hadiah ini sebagai sudah dibeli.',
+            buyerName: 'Nama Anda',
+            cancel: 'Batal',
+            confirm: 'Konfirmasi',
+            sendToTitle: 'Alamat Pengiriman',
+            sendToAddress: 'Jl Mardani III No. 24 D RT 11 RW 10 Kel Cempaka Putih Barat',
         }
     },
     en: {
@@ -90,6 +105,7 @@ export const translations = {
             event: 'Events',
             rsvp: 'RSVP',
             gift: 'Gift',
+            registry: 'Registry',
         },
         hero: {
             location: 'Jakarta',
@@ -163,6 +179,20 @@ export const translations = {
             accountNumber: '104226176041',
             copyButton: 'Copy Account Number',
             copied: 'Copied!',
+        },
+        registry: {
+            title: 'Wedding Registry',
+            description: 'Your presence is the greatest gift. However, if you wish to give something special, here is our wishlist.',
+            viewItem: 'View Product',
+            markAsBought: 'Mark as Bought',
+            purchased: 'Purchased ✓',
+            confirmTitle: 'Confirm Purchase',
+            confirmDesc: 'Enter your name to mark this gift as purchased.',
+            buyerName: 'Your Name',
+            cancel: 'Cancel',
+            confirm: 'Confirm',
+            sendToTitle: 'Shipping Address',
+            sendToAddress: 'Jl Mardani III No. 24 D RT 11 RW 10 Kel Cempaka Putih Barat',
         }
     },
     ko: {
@@ -172,6 +202,7 @@ export const translations = {
             event: '일정',
             rsvp: '참석 여부',
             gift: '축의금',
+            registry: '위시리스트',
         },
         hero: {
             location: '자카르타',
@@ -245,6 +276,20 @@ export const translations = {
             accountNumber: '104226176041',
             copyButton: '계좌 번호 복사',
             copied: '복사됨!',
+        },
+        registry: {
+            title: '위시리스트',
+            description: '여러분의 참석이 가장 큰 선물입니다. 특별한 선물을 주고 싶으신 분들을 위해 위시리스트를 준비했습니다.',
+            viewItem: '제품 보기',
+            markAsBought: '구매 완료로 표시',
+            purchased: '구매 완료 ✓',
+            confirmTitle: '구매 확인',
+            confirmDesc: '이 선물을 구매 완료로 표시하려면 이름을 입력해 주세요.',
+            buyerName: '이름',
+            cancel: '취소',
+            confirm: '확인',
+            sendToTitle: '배송 주소',
+            sendToAddress: 'Jl Mardani III No. 24 D RT 11 RW 10 Kel Cempaka Putih Barat',
         }
     }
 };
