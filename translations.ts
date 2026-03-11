@@ -15,6 +15,10 @@ export const translations = {
             celebration: 'Perayaan Pernikahan',
             venue: 'Amanaia Menteng',
         },
+        verse: {
+            translation: 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.',
+            reference: 'QS. Ar-Rum (30:21)',
+        },
         couple: {
             brideTitle: 'Mempelai Wanita',
             daughterOf: 'Putri dari\nAlmarhum Tommy Sitorus\n&\nSri Djuhariah',
@@ -25,8 +29,7 @@ export const translations = {
             title: 'Lokasi',
             city: 'JAKARTA, INDONESIA',
             quote: '"Keanggunan dalam kesederhanaan, sebuah ruang untuk merayakan cinta yang abadi."',
-            description1: 'Amanaia Menteng menjadi saksi penyatuan janji suci kami. Dengan arsitektur yang memadukan kekuatan struktur dan kelembutan alam, tempat ini melambangkan fondasi hubungan kami yang kokoh namun terus bertumbuh dengan indah.',
-            description2: 'Prosesi Akad Nikah akan dilangsungkan dengan khidmat di area taman, menyatu dengan alam, dilanjutkan dengan perayaan hangat bersama orang-orang terkasih.',
+            description: 'Prosesi pernikahan kami akan dilangsungkan di Amanaia Menteng, dilanjutkan dengan perayaan hangat bersama orang-orang terkasih.',
             directions: 'Petunjuk Arah',
             address: 'Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10410',
             openMap: 'Buka Google Maps',
@@ -112,6 +115,10 @@ export const translations = {
             celebration: 'Wedding Celebration',
             venue: 'Amanaia Menteng',
         },
+        verse: {
+            translation: 'And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.',
+            reference: 'QS. Ar-Rum (30:21)',
+        },
         couple: {
             brideTitle: 'The Bride',
             daughterOf: 'Daughter of\nthe late Tommy Sitorus\n&\nSri Djuhariah',
@@ -122,8 +129,7 @@ export const translations = {
             title: 'Location',
             city: 'JAKARTA, INDONESIA',
             quote: '"Elegance in simplicity, a space to celebrate eternal love."',
-            description1: 'Amanaia Menteng bears witness to our sacred union. With architecture that blends structural strength with natural softness, this place symbolizes the foundation of our relationship—strong yet growing beautifully.',
-            description2: 'The Holy Matrimony will be held solemnly in the garden area, at one with nature, followed by a warm celebration with loved ones.',
+            description: 'Our wedding ceremony will take place at Amanaia Menteng, followed by a warm celebration with loved ones.',
             directions: 'Directions',
             address: 'Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Central Jakarta City, Jakarta 10410',
             openMap: 'Open Google Maps',
@@ -209,6 +215,10 @@ export const translations = {
             celebration: '결혼식',
             venue: '아마나이아 멘텡',
         },
+        verse: {
+            translation: '그분의 징표 중 하나는, 너희를 위해 너희 자신들 중에서 배우자를 창조하셨으니, 너희가 그들에게서 평안을 얻고, 너희 사이에 애정과 자비를 두셨느니라. 실로 그 안에는 사색하는 이들을 위한 징표들이 있노라.',
+            reference: '꾸란 아르룸 (30:21)',
+        },
         couple: {
             brideTitle: '신부',
             daughterOf: '故 토미 시토루스와\n스리 주하리아 여사의\n딸',
@@ -219,8 +229,7 @@ export const translations = {
             title: '장소',
             city: '자카르타, 인도네시아',
             quote: '"단순함 속의 우아함, 영원한 사랑을 기념하는 공간."',
-            description1: '아마나이아 멘텡은 우리의 성스러운 서약을 증명하는 곳입니다. 구조적 강인함과 자연의 부드러움을 조화시킨 건축물처럼, 이곳은 견고하면서도 아름답게 성장하는 우리 관계의 토대를 상징합니다.',
-            description2: '결혼 서약식은 자연과 하나 되는 정원에서 엄숙하게 거행되며, 이후 사랑하는 이들과 함께 따뜻한 축하 연회가 이어집니다.',
+            description: '결혼식은 아마나이아 멘텡에서 거행되며, 이후 사랑하는 이들과 함께 따뜻한 축하 연회가 이어집니다.',
             directions: '오시는 길',
             address: 'Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10410',
             openMap: '구글 지도 열기',

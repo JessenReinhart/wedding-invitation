@@ -62,10 +62,10 @@ export const Hero: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-12 left-0 w-full flex justify-between px-6 md:px-12 text-xs md:text-sm font-sans tracking-[0.2em] uppercase text-wine-light"
+        className="absolute bottom-12 left-0 w-full flex justify-between items-center px-6 md:px-12 text-sm md:text-base font-sans tracking-[0.2em] uppercase text-wine z-20"
       >
         <span>{t('hero.location')}</span>
-        <span className="hidden md:inline">{t('hero.celebration')}</span>
+        <span className="tracking-[0.3em]">02 May 2026</span>
         <span>{t('hero.venue')}</span>
       </motion.div>
 

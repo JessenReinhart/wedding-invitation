@@ -69,17 +69,7 @@ export const Venue: React.FC = () => {
               className="w-full h-full object-cover grayscale opacity-50 sepia-[.2]"
             />
 
-            {/* Overlay Text */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center p-8 bg-wine/30 mix-blend-multiply">
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.2 }}
-                className="font-serif italic text-3xl md:text-5xl text-center leading-relaxed text-ivory max-w-2xl"
-              >
-                {t('venue.quote')}
-              </motion.p>
-            </div>
+
           </motion.div>
         </div>
 
@@ -89,11 +79,8 @@ export const Venue: React.FC = () => {
             <div className="w-full h-px bg-ivory/20 mt-4"></div>
           </div>
           <div className="font-sans font-light text-lg md:text-xl text-ivory/80 leading-relaxed">
-            <p className="mb-8">
-              {t('venue.description1')}
-            </p>
             <p>
-              {t('venue.description2')}
+              {t('venue.description')}
             </p>
           </div>
         </div>

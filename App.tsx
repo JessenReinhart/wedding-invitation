@@ -1,6 +1,7 @@
 import React from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Hero } from './components/Hero';
+import { Verse } from './components/Verse';
 import { Couple } from './components/Couple';
 import { Venue } from './components/Venue';
 import { Event } from './components/Event';
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <AnimatePresence mode='wait'>
           <div className="flex flex-col relative z-10">
             <Hero />
+            <Verse />
             <Couple />
             <Venue />
             <Event />
