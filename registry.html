@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Registry | V&J</title>
+    <meta name="description" content="Wedding registry wishlist for Vita & Jessen's wedding celebration." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;800&family=Inter:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ivory: '#F9F8F2',
+                        wine: '#591C27',
+                        'wine-dark': '#380E15',
+                        'wine-light': '#8C3F4D',
+                        stone: '#d6d3ce',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        display: ['"Cinzel"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #F9F8F2;
+            color: #591C27;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F9F8F2;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #591C27;
+            border-radius: 3px;
+        }
+
+        ::selection {
+            background-color: #591C27;
+            color: #F9F8F2;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="module" src="/registry.tsx"></script>
+</body>
+
+</html>

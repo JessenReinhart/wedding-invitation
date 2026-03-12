@@ -30,7 +30,6 @@ export const Navigation: React.FC = () => {
     { label: t('nav.event'), href: '#event' },
     { label: t('nav.rsvp'), href: '#rsvp' },
     { label: t('nav.gift'), href: '#gift' },
-    { label: t('nav.registry'), href: '#registry' },
   ];
 
   return (

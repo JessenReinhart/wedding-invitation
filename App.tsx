@@ -8,7 +8,6 @@ import { Event } from './components/Event';
 import { RSVP } from './components/RSVP';
 import { Navigation } from './components/Navigation';
 import { Gift } from './components/Gift';
-import { Registry } from './components/Registry';
 import { Footer } from './components/Footer';
 import { AnimatePresence } from 'framer-motion';
 
@@ -27,7 +26,6 @@ const App: React.FC = () => {
             <Event />
             <RSVP />
             <Gift />
-            <Registry />
             <Footer />
           </div>
         </AnimatePresence>

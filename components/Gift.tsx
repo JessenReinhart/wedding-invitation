@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Copy, Check, CreditCard } from 'lucide-react';
+import { Copy, Check, CreditCard, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
 
@@ -82,6 +82,23 @@ export const Gift: React.FC = () => {
                             <div className="absolute inset-0 bg-ivory transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
                         </button>
                     </div>
+                </motion.div>
+
+                {/* Registry Link */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="mt-12"
+                >
+                    <a
+                        href="/registry.html"
+                        className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 border border-wine text-wine font-sans text-sm tracking-widest uppercase hover:bg-wine hover:text-ivory transition-all duration-300 group shadow-sm hover:shadow-md"
+                    >
+                        <span>{t.registryLink}</span>
+                        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
+                    </a>
                 </motion.div>
             </div>
         </section>

@@ -62,7 +62,7 @@ export const Hero: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-12 left-0 w-full flex justify-between items-center px-6 md:px-12 text-sm md:text-base font-sans tracking-[0.2em] uppercase text-wine z-20"
+        className="absolute bottom-8 md:bottom-12 left-0 w-full flex flex-col md:flex-row justify-center md:justify-between items-center gap-2 md:gap-0 px-6 md:px-12 text-xs md:text-base font-sans tracking-[0.2em] md:tracking-[0.2em] uppercase text-wine z-20 text-center"
       >
         <span>{t('hero.location')}</span>
         <span className="tracking-[0.3em]">02 May 2026</span>

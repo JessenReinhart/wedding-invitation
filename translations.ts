@@ -21,9 +21,9 @@ export const translations = {
         },
         couple: {
             brideTitle: 'Mempelai Wanita',
-            daughterOf: 'Putri dari\nAlmarhum Tommy Sitorus\n&\nSri Djuhariah',
+            daughterOf: 'Anak pertama dari\nAlmarhum Tommy Sitorus\n&\nSri Djuhariah',
             groomTitle: 'Mempelai Pria',
-            sonOf: 'Putra dari\nAlmarhum Sugiarto Seno\n&\nYessy Wahyuni',
+            sonOf: 'Anak pertama dari\nAlmarhum Sugiarto Seno\n&\nYessy Wahyuni',
         },
         venue: {
             title: 'Lokasi',
@@ -85,6 +85,7 @@ export const translations = {
             accountNumber: '104226176041',
             copyButton: 'Salin No. Rekening',
             copied: 'Tersalin!',
+            registryLink: 'Lihat Daftar Keinginan Kami',
         },
         registry: {
             title: 'Wedding Registry',
@@ -99,6 +100,7 @@ export const translations = {
             confirm: 'Konfirmasi',
             sendToTitle: 'Alamat Pengiriman',
             sendToAddress: 'Jl Mardani III No. 24 D RT 11 RW 10 Kel Cempaka Putih Barat',
+            backToInvitation: 'Kembali ke Undangan',
         }
     },
     en: {
@@ -121,9 +123,9 @@ export const translations = {
         },
         couple: {
             brideTitle: 'The Bride',
-            daughterOf: 'Daughter of\nthe late Tommy Sitorus\n&\nSri Djuhariah',
+            daughterOf: 'First child of\nthe late Tommy Sitorus\n&\nSri Djuhariah',
             groomTitle: 'The Groom',
-            sonOf: 'Son of\nthe late Sugiarto Seno\n&\nYessy Wahyuni',
+            sonOf: 'First child of\nthe late Sugiarto Seno\n&\nYessy Wahyuni',
         },
         venue: {
             title: 'Location',
@@ -185,6 +187,7 @@ export const translations = {
             accountNumber: '104226176041',
             copyButton: 'Copy Account Number',
             copied: 'Copied!',
+            registryLink: 'View Our Wishlist',
         },
         registry: {
             title: 'Wedding Registry',
@@ -199,6 +202,7 @@ export const translations = {
             confirm: 'Confirm',
             sendToTitle: 'Shipping Address',
             sendToAddress: 'Jl Mardani III No. 24 D RT 11 RW 10 Kel Cempaka Putih Barat',
+            backToInvitation: 'Back to Invitation',
         }
     },
     ko: {
@@ -221,9 +225,9 @@ export const translations = {
         },
         couple: {
             brideTitle: '신부',
-            daughterOf: '故 토미 시토루스와\n스리 주하리아 여사의\n딸',
+            daughterOf: '故 토미 시토루스와\n스리 주하리아 여사의\n첫째 자녀',
             groomTitle: '신랑',
-            sonOf: '故 수기아르토 세노와\n예시 와유니의\n아들',
+            sonOf: '故 수기아르토 세노와\n예시 와유니의\n첫째 자녀',
         },
         venue: {
             title: '장소',
@@ -285,6 +289,7 @@ export const translations = {
             accountNumber: '104226176041',
             copyButton: '계좌 번호 복사',
             copied: '복사됨!',
+            registryLink: '위시리스트 보기',
         },
         registry: {
             title: '위시리스트',
@@ -299,6 +304,7 @@ export const translations = {
             confirm: '확인',
             sendToTitle: '배송 주소',
             sendToAddress: 'Jl Mardani III No. 24 D RT 11 RW 10 Kel Cempaka Putih Barat',
+            backToInvitation: '초대장으로 돌아가기',
         }
     }
 };
