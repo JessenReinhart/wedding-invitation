@@ -15,8 +15,8 @@ export const RegistryPage: React.FC = () => {
                     href="/"
                     className="flex items-center gap-3 text-wine/60 hover:text-wine transition-colors duration-300 group"
                 >
-                    <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300" />
-                    <span className="text-xs font-sans tracking-[0.15em] uppercase">
+                    <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300 flex-shrink-0" />
+                    <span className="hidden md:inline text-xs font-sans tracking-[0.15em] uppercase">
                         {t('registry.backToInvitation')}
                     </span>
                 </a>
