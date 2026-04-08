@@ -1,5 +1,6 @@
 import React from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { LoadingProvider } from './contexts/LoadingContext';
 import { Hero } from './components/Hero';
 import { Verse } from './components/Verse';
 import { Couple } from './components/Couple';
@@ -14,6 +15,7 @@ import { AnimatePresence } from 'framer-motion';
 const App: React.FC = () => {
   return (
     <LanguageProvider>
+    <LoadingProvider>
       <main className="w-full bg-ivory text-wine selection:bg-wine selection:text-ivory">
         <Navigation />
 
@@ -37,6 +39,7 @@ const App: React.FC = () => {
           }}>
         </div>
       </main>
+    </LoadingProvider>
     </LanguageProvider>
   );
 };
