@@ -23,7 +23,7 @@ export const Couple: React.FC = () => {
                 >
                     <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine-light mb-6">{t('couple.brideTitle')}</span>
                     <h2 className="font-display text-5xl md:text-7xl text-wine mb-2 leading-none">
-                        {isBatak ? 'VITA BR. SITORUS' : 'VITA'}
+                        VITA
                     </h2>
                     <p className="font-sans text-xs tracking-[0.2em] uppercase text-wine-dark mb-4">
                         {isBatak ? 'Alvita Fabiola Aprilia br. Sitorus' : 'Alvita Fabiola Aprilia'}

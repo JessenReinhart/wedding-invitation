@@ -21,6 +21,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (desktopLoaded && mobileLoaded) {
         isFullyLoaded = true;
         setLoadState('loaded');
+        window.scrollTo(0, 0);
         document.body.style.overflow = 'unset';
       }
     };
@@ -29,6 +30,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       document.body.style.overflow = 'hidden';
       const timer = setTimeout(() => {
         setLoadState('timeout');
+        window.scrollTo(0, 0);
         document.body.style.overflow = 'unset';
       }, 4500);
       return () => { clearTimeout(timer); document.body.style.overflow = 'unset'; };
@@ -55,6 +57,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const timer = setTimeout(() => {
       if (!isFullyLoaded) {
         setLoadState('timeout');
+        window.scrollTo(0, 0);
         document.body.style.overflow = 'unset';
       }
     }, 4500);
