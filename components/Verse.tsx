@@ -30,6 +30,7 @@ export const Verse: React.FC = () => {
                 <p
                     className="font-arabic text-2xl md:text-3xl lg:text-4xl leading-relaxed md:leading-loose text-wine"
                     dir="rtl"
+                    style={{ lineHeight: '2' }}
                     lang="ar"
                 >
                     ﴿وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ﴾
