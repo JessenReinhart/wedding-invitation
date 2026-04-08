@@ -5,10 +5,14 @@ import { GuestInput } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const RSVP: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, guestName } = useLanguage();
+  
+  const initialFirstName = guestName ? guestName.split(' ')[0] : '';
+  const initialLastName = guestName ? guestName.split(' ').slice(1).join(' ') : '';
+
   const [formData, setFormData] = useState<GuestInput>({
-    firstName: '',
-    lastName: '',
+    firstName: initialFirstName,
+    lastName: initialLastName,
     email: '',
     dietary: '',
     attendance: null

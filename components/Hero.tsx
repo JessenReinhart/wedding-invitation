@@ -5,7 +5,7 @@ import { useLoadingState } from '../contexts/LoadingContext';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { t, isBatak } = useLanguage();
+  const { t, isBatak, guestName } = useLanguage();
   const loadState = useLoadingState();
 
   const { scrollYProgress } = useScroll({
@@ -30,7 +30,7 @@ export const Hero: React.FC = () => {
     >
       <AnimatePresence>
         {loadState === 'loading' && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
@@ -96,17 +96,50 @@ export const Hero: React.FC = () => {
         </motion.div>
       </motion.div>
 
+      {/* Guest Name Block - Desktop: absolute top to avoid blocking the couple */}
+      {guestName && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          style={{ opacity }}
+          className={`absolute top-36 z-20 hidden lg:flex flex-col items-center transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow' : 'text-wine'}`}
+        >
+          <span className="font-sans text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
+            {t('hero.dear')}
+          </span>
+          <h2 className="font-serif italic text-4xl text-center opacity-90 drop-shadow-sm">
+            {guestName}
+          </h2>
+        </motion.div>
+      )}
+
       <motion.div
         style={{ y, opacity, scale }}
-        className={`relative z-10 flex flex-col items-center justify-center pb-56 md:pt-56 lg:pt-56 w-full px-4 gap-12 md:gap-16 transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory' : 'text-wine'}`}
+        className={`relative z-10 flex flex-col items-center justify-center pb-56 pt-32 md:pt-56 lg:pt-56 w-full px-4 gap-12 md:gap-16 transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow' : 'text-wine'}`}
       >
-        {/* Name Block */}
+        {/* Guest Name Block - Mobile: in-flow, original position */}
+        {guestName && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="mb-8 md:mb-12 flex lg:hidden flex-col items-center"
+          >
+            <span className="font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
+              {t('hero.dear')}
+            </span>
+            <h2 className="font-serif italic text-2xl md:text-4xl text-center opacity-90 drop-shadow-sm">
+              {guestName}
+            </h2>
+          </motion.div>
+        )}
         <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-8">
           <motion.h1
             initial={{ opacity: 0, scale: 0.8, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            style={{ x: textLeftX, textShadow: loadState === 'loaded' ? "0 4px 30px rgba(0,0,0,0.5)" : "none" }}
+            style={{ x: textLeftX }}
             className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
           >
             Jessen
@@ -126,7 +159,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, scale: 0.8, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-            style={{ x: textRightX, textShadow: loadState === 'loaded' ? "0 4px 30px rgba(0,0,0,0.5)" : "none" }}
+            style={{ x: textRightX }}
             className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
           >
             Vita
@@ -139,7 +172,6 @@ export const Hero: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 1 }}
           className="flex flex-col items-center justify-center gap-2 md:gap-3 text-[10px] md:text-xs font-sans tracking-[0.25em] md:tracking-[0.3em] uppercase text-center transition-colors duration-1000"
-          style={{ textShadow: loadState === 'loaded' ? "0 2px 10px rgba(0,0,0,0.5)" : "none" }}
         >
           <span className="font-semibold tracking-[0.4em] mb-1">02 MAY 2026</span>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 opacity-90">
@@ -167,7 +199,7 @@ export const Hero: React.FC = () => {
       </motion.div>
 
       {/* Gradient transition to next section */}
-      <div className="absolute bottom-0 left-0 w-full h-56 md:h-72 bg-gradient-to-t from-ivory to-transparent pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-56 bg-gradient-to-t from-ivory to-transparent pointer-events-none z-10" />
     </section>
   );
 };

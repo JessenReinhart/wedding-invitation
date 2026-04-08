@@ -40,6 +40,9 @@ export const Event: React.FC = () => {
               <span className="block font-medium text-wine/80">
                 {t('event.dressCodeDesc2')}
               </span>
+              <span className="block font-medium text-wine/80">
+                {t('event.dressCodeDesc3')}
+              </span>
             </p>
           </div>
         </div>
