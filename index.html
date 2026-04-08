@@ -4,6 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Prevent mobile browsers (e.g., Samsung Internet, MIUI) from forcing dark mode inversion -->
+  <meta name="color-scheme" content="light only" />
+  <meta name="supported-color-schemes" content="light" />
+
   <title>Vita & Jessen | 02.05.26</title>
 
   <!-- Fonts -->
@@ -41,6 +46,10 @@
   </script>
 
   <style>
+    :root {
+      color-scheme: light only;
+    }
+
     html,
     body {
       width: 100%;
