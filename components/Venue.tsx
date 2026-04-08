@@ -61,15 +61,10 @@ export const Venue: React.FC = () => {
           >
             <motion.img
               style={{ scale: imageScale }}
-              initial={{ filter: "blur(0px) sepia(0) grayscale(0)" }}
-              whileInView={{ filter: "blur(4px) sepia(0.2) grayscale(1)" }}
-              transition={{ duration: 2, delay: 1 }}
               src="/images/venue-bg.jpg"
               alt="Amanaia Menteng Architecture"
-              className="w-full h-full object-cover grayscale opacity-50 sepia-[.2]"
+              className="w-full h-full object-cover"
             />
-
-
           </motion.div>
         </div>
 
@@ -110,7 +105,7 @@ export const Venue: React.FC = () => {
 
           <div className="w-full h-px bg-ivory/20 mb-10"></div>
 
-          <div className="w-full h-[400px] md:h-[500px] rounded-sm overflow-hidden border border-ivory/10 grayscale hover:grayscale-0 transition-all duration-700">
+          <div className="w-full h-[400px] md:h-[500px] rounded-sm overflow-hidden border border-ivory/10 transition-all duration-700">
             <Map position={[-6.179173700072192, 106.84046081165128]} className="h-full w-full" />
           </div>
         </div>

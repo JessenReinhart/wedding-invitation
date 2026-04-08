@@ -4,10 +4,17 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 export const Navigation: React.FC = () => {
   const [hidden, setHidden] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
   const { language, setLanguage, t } = useLanguage();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > 50) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+
     const previous = scrollY.getPrevious() || 0;
     if (latest > previous && latest > 150) {
       setHidden(true);
@@ -40,9 +47,13 @@ export const Navigation: React.FC = () => {
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed top-0 left-0 w-full z-50 flex justify-between md:grid md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 md:px-12 text-wine bg-ivory/80 backdrop-blur-sm border-b border-wine/10"
+      className={`fixed top-0 left-0 w-full z-50 flex justify-between md:grid md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 md:px-12 transition-all duration-500 ${
+        isScrolled 
+          ? 'bg-ivory/95 backdrop-blur-md border-b border-wine/10 text-wine' 
+          : 'bg-transparent text-ivory drop-shadow-md'
+      }`}
     >
-      <div className="text-2xl font-display font-bold text-wine tracking-tighter md:justify-self-start">
+      <div className={`text-3xl lg:text-4xl font-display font-bold tracking-tighter md:justify-self-start transition-colors duration-500 ${isScrolled ? 'text-wine' : 'text-ivory'}`}>
         V&J
       </div>
 
@@ -60,10 +71,7 @@ export const Navigation: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-4 md:gap-6 md:justify-self-end">
-        <div className="hidden md:block text-sm font-sans tracking-widest uppercase">
-          02.05.26
-        </div>
-        <div className="flex gap-2 text-xs font-sans tracking-wider items-center">
+        <div className="flex gap-4 md:gap-5 text-xs md:text-sm font-sans tracking-wider items-center">
           <button
             onClick={() => setLanguage('id')}
             className={`hover:opacity-100 transition-opacity ${language === 'id' ? 'font-bold opacity-100' : 'opacity-50'}`}
