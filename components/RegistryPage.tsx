@@ -12,7 +12,7 @@ export const RegistryPage: React.FC = () => {
             {/* Minimal Header */}
             <header className="w-full flex justify-between items-center px-6 py-6 md:px-12 border-b border-wine/10">
                 <a
-                    href="/"
+                    href={`/?lang=${language}`}
                     className="flex items-center gap-3 text-wine/60 hover:text-wine transition-colors duration-300 group"
                 >
                     <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300 flex-shrink-0" />

@@ -93,7 +93,7 @@ export const Gift: React.FC = () => {
                     className="mt-12"
                 >
                     <a
-                        href="/registry.html"
+                        href={`/registry.html?lang=${language}`}
                         className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 border border-wine text-wine font-sans text-sm tracking-widest uppercase hover:bg-wine hover:text-ivory transition-all duration-300 group shadow-sm hover:shadow-md"
                     >
                         <span>{t.registryLink}</span>
