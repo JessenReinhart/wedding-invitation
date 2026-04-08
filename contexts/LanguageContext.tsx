@@ -1,16 +1,22 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
 import { translations, Language } from '@/translations';
 
 interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => void;
     t: (key: string) => any; // Helper for nested keys
+    isBatak: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [language, setLanguage] = useState<Language>('id');
+
+    const isBatak = useMemo(() => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('fam') === '1';
+    }, []);
 
     const t = (path: string) => {
         const keys = path.split('.');
@@ -25,7 +31,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t }}>
+        <LanguageContext.Provider value={{ language, setLanguage, t, isBatak }}>
             {children}
         </LanguageContext.Provider>
     );

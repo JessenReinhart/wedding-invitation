@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const Couple: React.FC = () => {
-    const { t } = useLanguage();
+    const { t, isBatak } = useLanguage();
     return (
         <section id="couple" className="relative w-full bg-ivory py-32 px-6 md:px-12 overflow-hidden flex flex-col justify-center">
             {/* Background Decorative Text */}
@@ -23,10 +23,10 @@ export const Couple: React.FC = () => {
                 >
                     <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine-light mb-6">{t('couple.brideTitle')}</span>
                     <h2 className="font-display text-5xl md:text-7xl text-wine mb-2 leading-none">
-                        VITA
+                        {isBatak ? 'VITA BR. SITORUS' : 'VITA'}
                     </h2>
                     <p className="font-sans text-xs tracking-[0.2em] uppercase text-wine-dark mb-4">
-                        Alvita Fabiola Aprilia
+                        {isBatak ? 'Alvita Fabiola Aprilia br. Sitorus' : 'Alvita Fabiola Aprilia'}
                     </p>
                     <div className="w-12 h-px bg-wine/30 my-6"></div>
                     <div className="font-serif italic text-base md:text-lg text-wine-dark/80 space-y-1">

@@ -5,7 +5,7 @@ import { useLoadingState } from '../contexts/LoadingContext';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { t } = useLanguage();
+  const { t, isBatak } = useLanguage();
   const loadState = useLoadingState();
 
   const { scrollYProgress } = useScroll({
@@ -129,7 +129,7 @@ export const Hero: React.FC = () => {
             style={{ x: textRightX, textShadow: loadState === 'loaded' ? "0 4px 30px rgba(0,0,0,0.5)" : "none" }}
             className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
           >
-            Vita
+            {isBatak ? 'Vita br. Sitorus' : 'Vita'}
           </motion.h1>
         </div>
 
