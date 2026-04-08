@@ -49,12 +49,12 @@ export const Navigation: React.FC = () => {
       }}
       animate={hidden || loadState === 'loading' ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className={`fixed top-0 left-0 w-full z-50 flex justify-between md:grid md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 pb-10 md:px-12 transition-all duration-500 ${isScrolled
+      className={`fixed top-0 left-0 w-full z-50 flex justify-between md:grid md:grid-cols-[1fr_auto_1fr] items-center px-6 py-6 pb-10 md:px-12 transition-all duration-500 ${isScrolled || loadState === 'timeout'
         ? 'bg-ivory/95 backdrop-blur-md text-wine shadow-lg'
         : 'bg-gradient-to-b from-black/70 via-black/30 to-transparent text-ivory'
         }`}
     >
-      <div className={`text-3xl lg:text-4xl font-display font-bold tracking-tighter md:justify-self-start transition-colors duration-500 ${isScrolled ? 'text-wine' : 'text-ivory'}`}>
+      <div className={`text-3xl lg:text-4xl font-display font-bold tracking-tighter md:justify-self-start transition-colors duration-500 ${isScrolled || loadState === 'timeout' ? 'text-wine' : 'text-ivory'}`}>
         V&J
       </div>
 
