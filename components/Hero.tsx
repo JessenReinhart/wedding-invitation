@@ -22,12 +22,15 @@ export const Hero: React.FC = () => {
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  // On mobile: only opacity + white overlay; skip parallax, scale, blur, text sliding
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1] : [1, 1.05]);
 
-  const textLeftX = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const textRightX = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const bgY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "15%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1] : [1, 1.05]);
+  const textLeftX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, -100]);
+  const textRightX = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 0] : [0, 100]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
   const imageBlur = useTransform(scrollYProgress, [0, 0.6], isMobile ? ["blur(0px)", "blur(0px)"] : ["blur(0px)", "blur(12px)"]);
 
@@ -81,8 +84,8 @@ export const Hero: React.FC = () => {
         transition={{ duration: 1.5 }}
         className="absolute inset-0 z-0"
         style={{
-          y: useTransform(scrollYProgress, [0, 1], ["0%", "15%"]),
-          scale: useTransform(scrollYProgress, [0, 1], [1, 1.05]),
+          y: bgY,
+          scale: bgScale,
           filter: imageBlur
         }}
       >
