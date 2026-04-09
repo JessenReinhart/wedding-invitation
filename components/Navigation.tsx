@@ -38,6 +38,7 @@ export const Navigation: React.FC = () => {
     { label: t('nav.location'), href: '#venue' },
     { label: t('nav.event'), href: '#event' },
     { label: t('nav.rsvp'), href: '#rsvp' },
+    { label: t('nav.wishes'), href: '#wishes' },
     { label: t('nav.gift'), href: '#gift' },
   ];
 

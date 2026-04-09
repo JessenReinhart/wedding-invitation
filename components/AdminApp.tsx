@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, RotateCcw, Save, X, ExternalLink, Gift, Check } from 'lucide-react';
+import { Plus, Pencil, Trash2, RotateCcw, Save, X, ExternalLink, Gift, Check, Users } from 'lucide-react';
+import { AdminRSVP } from './AdminRSVP';
+import { AdminWishes } from './AdminWishes';
+import { Heart } from 'lucide-react';
 import {
     subscribeToRegistryItems,
     addRegistryItem,
@@ -19,7 +22,10 @@ const emptyForm: Omit<NewRegistryItem, 'order'> = {
     boughtBy: '',
 };
 
+type Tab = 'registry' | 'rsvp' | 'wishes';
+
 export const AdminApp: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<Tab>('registry');
     const [items, setItems] = useState<RegistryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -107,8 +113,12 @@ export const AdminApp: React.FC = () => {
             <header className="border-b border-ivory/10 px-6 py-6 md:px-12">
                 <div className="max-w-5xl mx-auto flex items-center justify-between">
                     <div>
-                        <h1 className="font-display text-2xl md:text-3xl tracking-wide">Registry Dashboard</h1>
-                        <p className="font-sans text-ivory/40 text-sm mt-1">Manage your wedding registry items</p>
+                        <h1 className="font-display text-2xl md:text-3xl tracking-wide">Admin Dashboard</h1>
+                        <p className="font-sans text-ivory/40 text-sm mt-1">
+                            {activeTab === 'registry' && 'Manage your wedding registry items'}
+                            {activeTab === 'rsvp' && 'View guest RSVP responses'}
+                            {activeTab === 'wishes' && 'Manage guest wishes and messages'}
+                        </p>
                     </div>
                     <a
                         href="/"
@@ -117,9 +127,47 @@ export const AdminApp: React.FC = () => {
                         ← Back to Site
                     </a>
                 </div>
+                {/* Tabs */}
+                <div className="max-w-5xl mx-auto flex gap-1 mt-6">
+                    <button
+                        onClick={() => setActiveTab('registry')}
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${
+                            activeTab === 'registry'
+                                ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
+                                : 'text-ivory/40 border border-transparent hover:text-ivory/70'
+                        }`}
+                    >
+                        <Gift size={14} /> Registry
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('rsvp')}
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${
+                            activeTab === 'rsvp'
+                                ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
+                                : 'text-ivory/40 border border-transparent hover:text-ivory/70'
+                        }`}
+                    >
+                        <Users size={14} /> Guest List
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('wishes')}
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${
+                            activeTab === 'wishes'
+                                ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
+                                : 'text-ivory/40 border border-transparent hover:text-ivory/70'
+                        }`}
+                    >
+                        <Heart size={14} /> Wishes
+                    </button>
+                </div>
             </header>
 
             <main className="max-w-5xl mx-auto px-6 md:px-12 py-10">
+
+            {activeTab === 'rsvp' && <AdminRSVP />}
+            {activeTab === 'wishes' && <AdminWishes />}
+            {activeTab === 'registry' && (
+                <>
                 {/* Stats Bar */}
                 <div className="grid grid-cols-3 gap-4 mb-10">
                     <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
@@ -280,6 +328,8 @@ export const AdminApp: React.FC = () => {
                         <p className="font-sans text-sm text-ivory/30">Click "Add Item" to start building your registry.</p>
                     </div>
                 )}
+                </>
+            )}
             </main>
         </div>
     );

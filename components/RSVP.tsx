@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import { GuestInput } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { submitRSVP } from '../services/rsvp';
 
 export const RSVP: React.FC = () => {
   const { t, guestName } = useLanguage();
@@ -18,11 +19,22 @@ export const RSVP: React.FC = () => {
     attendance: null
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => setSubmitted(true), 1000);
+    setSubmitting(true);
+    setError(null);
+    try {
+      await submitRSVP(formData);
+      setSubmitted(true);
+    } catch (err) {
+      console.error('RSVP submission failed:', err);
+      setError(t('rsvp.errorMessage') || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -118,17 +130,28 @@ export const RSVP: React.FC = () => {
               onChange={handleChange}
             />
 
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-red-300 font-sans text-sm text-right"
+              >
+                {error}
+              </motion.p>
+            )}
+
             <div className="pt-12 flex justify-end">
               <button
                 type="submit"
-                className="group relative px-8 py-4 bg-ivory text-wine font-sans uppercase tracking-widest text-sm font-bold overflow-hidden"
+                disabled={submitting}
+                className={`group relative px-8 py-4 bg-ivory text-wine font-sans uppercase tracking-widest text-sm font-bold overflow-hidden transition-opacity ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <span className="relative z-10 flex items-center gap-2 group-hover:gap-4 transition-all">
-                  {t('rsvp.submit')} <ArrowRight size={16} />
+                  {submitting ? t('rsvp.submitting') || 'Sending...' : t('rsvp.submit')} <ArrowRight size={16} />
                 </span>
                 <div className="absolute inset-0 bg-wine-light transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
                 <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 group-hover:gap-4 transition-all opacity-0 group-hover:opacity-100 text-ivory pointer-events-none">
-                  {t('rsvp.submit')} <ArrowRight size={16} />
+                  {submitting ? t('rsvp.submitting') || 'Sending...' : t('rsvp.submit')} <ArrowRight size={16} />
                 </span>
               </button>
             </div>
