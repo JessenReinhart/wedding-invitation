@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useLoadingState } from '../contexts/LoadingContext';
@@ -7,6 +7,15 @@ export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t, isBatak, guestName } = useLanguage();
   const loadState = useLoadingState();
+
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1023px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -20,7 +29,7 @@ export const Hero: React.FC = () => {
   const textLeftX = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const textRightX = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
-  const imageBlur = useTransform(scrollYProgress, [0, 0.6], ["blur(0px)", "blur(12px)"]);
+  const imageBlur = useTransform(scrollYProgress, [0, 0.6], isMobile ? ["blur(0px)", "blur(0px)"] : ["blur(0px)", "blur(12px)"]);
 
   return (
     <section
@@ -89,11 +98,8 @@ export const Hero: React.FC = () => {
 
         <motion.div
           style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 pointer-events-none"
-        >
-          <div className="absolute inset-0 bg-wine/60 mix-blend-multiply"></div>
-          <div className="absolute inset-0 bg-black/40"></div>
-        </motion.div>
+          className="absolute inset-0 bg-white pointer-events-none"
+        />
       </motion.div>
 
       {/* Guest Name Block - Desktop: absolute top to avoid blocking the couple */}
@@ -108,7 +114,7 @@ export const Hero: React.FC = () => {
           <span className="font-sans text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
             {t('hero.dear')}
           </span>
-          <h2 className="font-serif italic text-4xl text-center opacity-90 drop-shadow-sm">
+          <h2 className="font-serif italic text-4xl text-center opacity-90 drop-shadow">
             {guestName}
           </h2>
         </motion.div>
@@ -129,7 +135,7 @@ export const Hero: React.FC = () => {
             <span className="font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
               {t('hero.dear')}
             </span>
-            <h2 className="font-serif italic text-2xl md:text-4xl text-center opacity-90 drop-shadow-sm">
+            <h2 className="font-serif italic text-2xl md:text-4xl text-center opacity-90 drop-shadow">
               {guestName}
             </h2>
           </motion.div>
@@ -140,7 +146,7 @@ export const Hero: React.FC = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             style={{ x: textLeftX }}
-            className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
+            className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000 drop-shadow"
           >
             Jessen
           </motion.h1>
@@ -160,7 +166,7 @@ export const Hero: React.FC = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
             style={{ x: textRightX }}
-            className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
+            className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000 drop-shadow"
           >
             Vita
           </motion.h1>
@@ -174,7 +180,7 @@ export const Hero: React.FC = () => {
           className="flex flex-col items-center justify-center gap-2 md:gap-3 text-[10px] md:text-xs font-sans tracking-[0.25em] md:tracking-[0.3em] uppercase text-center transition-colors duration-1000"
         >
           <span className="font-semibold tracking-[0.4em] mb-1">02 MAY 2026</span>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 opacity-90">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 opacity-90 drop-shadow">
             <span>{t('hero.location')}</span>
             <span className={`hidden md:block w-1 h-1 rounded-full transition-colors duration-1000 ${loadState === 'loaded' ? 'bg-ivory/50' : 'bg-wine/50'}`}></span>
             <span>{t('hero.venue')}</span>
@@ -192,7 +198,7 @@ export const Hero: React.FC = () => {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="text-wine text-lg md:text-xl opacity-60"
+          className="text-wine text-lg md:text-xl opacity-60 drop-shadow"
         >
           ↓
         </motion.div>
