@@ -108,18 +108,22 @@ export const Hero: React.FC = () => {
       {/* Guest Name Block - Desktop: absolute top to avoid blocking the couple */}
       {guestName && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
           style={{ opacity }}
-          className={`absolute top-36 z-20 hidden lg:flex flex-col items-center transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow' : 'text-wine'}`}
+          className="absolute top-36 z-20 hidden lg:flex flex-col items-center"
         >
-          <span className="font-sans text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
-            {t('hero.dear')}
-          </span>
-          <h2 className="font-serif italic text-4xl text-center opacity-90 drop-shadow">
-            {guestName}
-          </h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className={`flex flex-col items-center transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow' : 'text-wine'}`}
+          >
+            <span className="font-sans text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
+              {t('hero.dear')}
+            </span>
+            <h2 className="font-serif italic text-4xl text-center opacity-90 drop-shadow">
+              {guestName}
+            </h2>
+          </motion.div>
         </motion.div>
       )}
 
@@ -144,35 +148,37 @@ export const Hero: React.FC = () => {
           </motion.div>
         )}
         <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-8">
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.8, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            style={{ x: textLeftX }}
-            className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000 drop-shadow"
-          >
-            Jessen
-          </motion.h1>
+          <motion.div style={{ x: textLeftX }}>
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.8, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
+            >
+              Jessen
+            </motion.h1>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.6, type: "spring", stiffness: 100 }}
             style={{ boxShadow: loadState === 'loaded' ? "0 4px 30px rgba(0,0,0,0.3)" : "none" }}
-            className={`my-3 md:my-5 lg:my-0 shrink-0 w-16 h-16 md:w-20 md:h-20 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full border flex items-center justify-center font-serif italic text-2xl md:text-3xl lg:text-3xl xl:text-4xl bg-transparent transition-colors duration-1000 ${loadState === 'loaded' ? 'border-ivory/50 backdrop-blur-sm' : 'border-wine/50'}`}
+            className={`my-3 md:my-5 lg:my-0 shrink-0 w-16 h-16 md:w-20 md:h-20 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full border flex items-center justify-center font-serif italic text-2xl md:text-3xl lg:text-3xl xl:text-4xl bg-transparent transition-colors duration-1000 ${loadState === 'loaded' ? 'border-ivory/50' : 'border-wine/50'}`}
           >
             <span className="relative top-[-2px]">&</span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.8, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-            style={{ x: textRightX }}
-            className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000 drop-shadow"
-          >
-            Vita
-          </motion.h1>
+          <motion.div style={{ x: textRightX }}>
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.8, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
+              className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
+            >
+              Vita
+            </motion.h1>
+          </motion.div>
         </div>
 
         {/* Date and Location Block */}
