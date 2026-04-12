@@ -19,6 +19,7 @@ export interface RSVPEntry {
     email: string;
     dietary: string;
     attendance: 'yes' | 'no';
+    pax: number;
     createdAt: Timestamp;
 }
 
@@ -28,6 +29,7 @@ export interface RSVPInput {
     email: string;
     dietary: string;
     attendance: 'yes' | 'no' | null;
+    pax: number;
 }
 
 const COLLECTION = 'rsvps';
@@ -42,6 +44,7 @@ export async function submitRSVP(data: RSVPInput): Promise<string> {
         email: data.email,
         dietary: data.dietary,
         attendance: data.attendance,
+        pax: data.pax,
         createdAt: serverTimestamp(),
     });
     return docRef.id;

@@ -15,4 +15,5 @@ export interface GuestInput {
   email: string;
   dietary: string;
   attendance: 'yes' | 'no' | null;
+  pax: number;
 }

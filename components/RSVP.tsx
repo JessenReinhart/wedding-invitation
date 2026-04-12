@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import { GuestInput } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -8,15 +8,19 @@ import { submitRSVP } from '../services/rsvp';
 export const RSVP: React.FC = () => {
   const { t, guestName } = useLanguage();
   
-  const initialFirstName = guestName ? guestName.split(' ')[0] : '';
-  const initialLastName = guestName ? guestName.split(' ').slice(1).join(' ') : '';
+  const [isNameEditing, setIsNameEditing] = useState(false);
+  const [displayName, setDisplayName] = useState(guestName || '');
+  const [editFirstName, setEditFirstName] = useState('');
+  const [editLastName, setEditLastName] = useState('');
+  const [nameError, setNameError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<GuestInput>({
-    firstName: initialFirstName,
-    lastName: initialLastName,
+    firstName: guestName || '',
+    lastName: '',
     email: '',
     dietary: '',
-    attendance: null
+    attendance: null,
+    pax: 1
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -27,7 +31,7 @@ export const RSVP: React.FC = () => {
     setSubmitting(true);
     setError(null);
     try {
-      await submitRSVP(formData);
+      await submitRSVP(formData as any);
       setSubmitted(true);
     } catch (err) {
       console.error('RSVP submission failed:', err);
@@ -38,11 +42,38 @@ export const RSVP: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'number' ? parseInt(e.target.value) || 0 : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleAttendance = (value: 'yes' | 'no') => {
     setFormData({ ...formData, attendance: value });
+  };
+
+  const startNameEdit = () => {
+    setIsNameEditing(true);
+    setEditFirstName('');
+    setEditLastName('');
+    setNameError(null);
+  };
+
+  const cancelNameEdit = () => {
+    setIsNameEditing(false);
+    setNameError(null);
+  };
+
+  const saveNameEdit = () => {
+    const firstName = editFirstName.trim();
+    const lastName = editLastName.trim();
+    if (!firstName || !lastName) {
+      setNameError(t('rsvp.nameRequired') || 'Please enter your first and last name.');
+      return;
+    }
+
+    setFormData({ ...formData, firstName, lastName });
+    setDisplayName(`${firstName} ${lastName}`);
+    setIsNameEditing(false);
+    setNameError(null);
   };
 
   return (
@@ -79,20 +110,106 @@ export const RSVP: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-12">
 
             {/* Name Group */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <InputGroup
-                label={t('rsvp.firstName')}
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-              />
-              <InputGroup
-                label={t('rsvp.lastName')}
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-              />
-            </div>
+            {guestName ? (
+              <div className="space-y-6">
+                <AnimatePresence mode="wait">
+                  {!isNameEditing ? (
+                    <motion.div
+                      key="name-display"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 border-b border-ivory/20 pb-6"
+                    >
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-ivory/60 mb-2">
+                          {t('rsvp.fullName')}
+                        </p>
+                        <p className="font-serif text-2xl md:text-3xl text-ivory">
+                          {displayName}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={startNameEdit}
+                        className="px-5 py-3 border border-ivory/20 text-ivory/70 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all"
+                      >
+                        {t('rsvp.editName') || 'Edit Name'}
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="name-edit"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-6"
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <InputGroup
+                          label={t('rsvp.firstName')}
+                          name="editFirstName"
+                          value={editFirstName}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditFirstName(e.target.value)}
+                          required
+                        />
+                        <InputGroup
+                          label={t('rsvp.lastName')}
+                          name="editLastName"
+                          value={editLastName}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditLastName(e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      {nameError && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-300 font-sans text-sm text-right"
+                        >
+                          {nameError}
+                        </motion.p>
+                      )}
+
+                      <div className="flex justify-end gap-3">
+                        <button
+                          type="button"
+                          onClick={cancelNameEdit}
+                          className="px-5 py-3 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all"
+                        >
+                          {t('rsvp.cancelEdit') || 'Cancel'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={saveNameEdit}
+                          className="px-5 py-3 bg-ivory text-wine text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
+                        >
+                          {t('rsvp.saveName') || 'Save Name'}
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <InputGroup
+                  label={t('rsvp.firstName')}
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+                <InputGroup
+                  label={t('rsvp.lastName')}
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            )}
 
             <InputGroup
               label={t('rsvp.email')}
@@ -123,12 +240,23 @@ export const RSVP: React.FC = () => {
               </div>
             </div>
 
-            <InputGroup
-              label={t('rsvp.dietary')}
-              name="dietary"
-              value={formData.dietary}
-              onChange={handleChange}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <InputGroup
+                label={t('rsvp.pax')}
+                name="pax"
+                type="number"
+                min="1"
+                max="10"
+                value={formData.pax}
+                onChange={handleChange}
+              />
+              <InputGroup
+                label={t('rsvp.dietary')}
+                name="dietary"
+                value={formData.dietary}
+                onChange={handleChange}
+              />
+            </div>
 
             {error && (
               <motion.p
@@ -143,8 +271,8 @@ export const RSVP: React.FC = () => {
             <div className="pt-12 flex justify-end">
               <button
                 type="submit"
-                disabled={submitting}
-                className={`group relative px-8 py-4 bg-ivory text-wine font-sans uppercase tracking-widest text-sm font-bold overflow-hidden transition-opacity ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={submitting || isNameEditing}
+                className={`group relative px-8 py-4 bg-ivory text-wine font-sans uppercase tracking-widest text-sm font-bold overflow-hidden transition-opacity ${(submitting || isNameEditing) ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <span className="relative z-10 flex items-center gap-2 group-hover:gap-4 transition-all">
                   {submitting ? t('rsvp.submitting') || 'Sending...' : t('rsvp.submit')} <ArrowRight size={16} />
@@ -165,16 +293,17 @@ export const RSVP: React.FC = () => {
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  required?: boolean;
 }
 
-const InputGroup: React.FC<InputProps> = ({ label, ...props }) => {
+const InputGroup: React.FC<InputProps> = ({ label, required = false, ...props }) => {
   return (
     <div className="relative group">
       <input
         {...props}
         className="w-full bg-transparent border-b border-ivory/20 py-4 text-xl md:text-2xl text-ivory placeholder-transparent focus:outline-none focus:border-ivory transition-colors font-serif"
         placeholder={label}
-        required
+        required={required}
       />
       <label className="absolute left-0 -top-4 text-xs tracking-widest uppercase text-ivory font-sans transition-all duration-300 pointer-events-none">
         {label}

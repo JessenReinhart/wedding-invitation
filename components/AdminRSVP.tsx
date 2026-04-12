@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Search, ChevronUp, ChevronDown, Users, CheckCircle, XCircle, Download, Trash2, RotateCcw } from 'lucide-react';
 import { subscribeToRSVPs, deleteRSVP, type RSVPEntry } from '../services/rsvp';
 
-type SortField = 'firstName' | 'lastName' | 'email' | 'attendance' | 'createdAt';
+type SortField = 'firstName' | 'lastName' | 'email' | 'attendance' | 'pax' | 'createdAt';
 type SortDir = 'asc' | 'desc';
 
 export const AdminRSVP: React.FC = () => {
@@ -44,6 +44,9 @@ export const AdminRSVP: React.FC = () => {
             if (sortField === 'createdAt') {
                 aVal = a.createdAt?.seconds ?? 0;
                 bVal = b.createdAt?.seconds ?? 0;
+            } else if (sortField === 'pax') {
+                aVal = a.pax || 0;
+                bVal = b.pax || 0;
             } else {
                 aVal = (a[sortField] ?? '').toString().toLowerCase();
                 bVal = (b[sortField] ?? '').toString().toLowerCase();
@@ -76,7 +79,9 @@ export const AdminRSVP: React.FC = () => {
         }
     };
 
-    const attendingCount = entries.filter((e) => e.attendance === 'yes').length;
+    const attendingCount = entries
+        .filter((e) => e.attendance === 'yes')
+        .reduce((sum, e) => sum + (e.pax || 1), 0);
     const notAttendingCount = entries.filter((e) => e.attendance === 'no').length;
 
     const formatDate = (ts: RSVPEntry['createdAt']) => {
@@ -88,12 +93,13 @@ export const AdminRSVP: React.FC = () => {
 
     // ─── CSV Export ────────────────────────────────────────
     const handleExport = () => {
-        const headers = ['First Name', 'Last Name', 'Email', 'Attendance', 'Dietary', 'Submitted At'];
+        const headers = ['First Name', 'Last Name', 'Email', 'Attendance', 'Pax', 'Dietary', 'Submitted At'];
         const rows = filtered.map((e) => [
             e.firstName,
             e.lastName,
             e.email,
             e.attendance,
+            e.pax || 1,
             e.dietary || '',
             formatDate(e.createdAt),
         ]);
@@ -138,7 +144,7 @@ export const AdminRSVP: React.FC = () => {
                 <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
                     <p className="font-display text-3xl text-green-400">{attendingCount}</p>
                     <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
-                        <CheckCircle size={12} /> Attending
+                        <CheckCircle size={12} /> Total Guests
                     </p>
                 </div>
                 <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
@@ -189,6 +195,7 @@ export const AdminRSVP: React.FC = () => {
                                 <ThButton field="firstName" className="py-3 pr-4">Name</ThButton>
                                 <ThButton field="email" className="py-3 pr-4">Email</ThButton>
                                 <ThButton field="attendance" className="py-3 pr-4">Status</ThButton>
+                                <ThButton field="pax" className="py-3 pr-4">Pax</ThButton>
                                 <th className="text-left py-3 pr-4">
                                     <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Dietary</span>
                                 </th>
@@ -206,9 +213,13 @@ export const AdminRSVP: React.FC = () => {
                                 >
                                     <td className="py-4 pr-4 font-sans text-sm text-ivory/30">{i + 1}</td>
                                     <td className="py-4 pr-4">
-                                        <p className="font-serif text-ivory">{entry.firstName} {entry.lastName}</p>
+                                        <p className="font-serif text-ivory">
+                                            {(entry.firstName || entry.lastName) 
+                                                ? `${entry.firstName || ''} ${entry.lastName || ''}`.trim()
+                                                : 'Anonymous'}
+                                        </p>
                                     </td>
-                                    <td className="py-4 pr-4 font-sans text-sm text-ivory/60">{entry.email}</td>
+                                    <td className="py-4 pr-4 font-sans text-sm text-ivory/60">{entry.email || '—'}</td>
                                     <td className="py-4 pr-4">
                                         {entry.attendance === 'yes' ? (
                                             <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-xs tracking-wider uppercase font-sans">
@@ -219,6 +230,9 @@ export const AdminRSVP: React.FC = () => {
                                                 <XCircle size={12} /> Not Attending
                                             </span>
                                         )}
+                                    </td>
+                                    <td className="py-4 pr-4 font-sans text-sm text-ivory">
+                                        {entry.pax || 1}
                                     </td>
                                     <td className="py-4 pr-4 font-sans text-sm text-ivory/40 italic">
                                         {entry.dietary || '—'}
