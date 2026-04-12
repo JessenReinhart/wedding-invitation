@@ -4,6 +4,8 @@ import {
     onSnapshot,
     query,
     orderBy,
+    doc,
+    deleteDoc,
     serverTimestamp,
     type Unsubscribe,
     type Timestamp,
@@ -60,4 +62,12 @@ export function subscribeToRSVPs(
         })) as RSVPEntry[];
         callback(entries);
     });
+}
+
+/**
+ * Delete an RSVP entry from Firestore.
+ */
+export async function deleteRSVP(id: string): Promise<void> {
+    const docRef = doc(db, COLLECTION, id);
+    await deleteDoc(docRef);
 }

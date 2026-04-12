@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, ChevronUp, ChevronDown, Users, CheckCircle, XCircle, Download } from 'lucide-react';
-import { subscribeToRSVPs, type RSVPEntry } from '../services/rsvp';
+import { Search, ChevronUp, ChevronDown, Users, CheckCircle, XCircle, Download, Trash2, RotateCcw } from 'lucide-react';
+import { subscribeToRSVPs, deleteRSVP, type RSVPEntry } from '../services/rsvp';
 
 type SortField = 'firstName' | 'lastName' | 'email' | 'attendance' | 'createdAt';
 type SortDir = 'asc' | 'desc';
@@ -11,6 +11,8 @@ export const AdminRSVP: React.FC = () => {
     const [search, setSearch] = useState('');
     const [sortField, setSortField] = useState<SortField>('createdAt');
     const [sortDir, setSortDir] = useState<SortDir>('desc');
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
         const unsubscribe = subscribeToRSVPs((data) => {
@@ -59,6 +61,18 @@ export const AdminRSVP: React.FC = () => {
         } else {
             setSortField(field);
             setSortDir('asc');
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        setSubmitting(true);
+        try {
+            await deleteRSVP(id);
+            setDeletingId(null);
+        } catch (err) {
+            console.error('Failed to delete RSVP:', err);
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -178,7 +192,10 @@ export const AdminRSVP: React.FC = () => {
                                 <th className="text-left py-3 pr-4">
                                     <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Dietary</span>
                                 </th>
-                                <ThButton field="createdAt" className="py-3">Submitted</ThButton>
+                                <ThButton field="createdAt" className="py-3 pr-4">Submitted</ThButton>
+                                <th className="text-right py-3">
+                                    <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Actions</span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -206,8 +223,37 @@ export const AdminRSVP: React.FC = () => {
                                     <td className="py-4 pr-4 font-sans text-sm text-ivory/40 italic">
                                         {entry.dietary || '—'}
                                     </td>
-                                    <td className="py-4 font-sans text-xs text-ivory/30">
+                                    <td className="py-4 pr-4 font-sans text-xs text-ivory/30">
                                         {formatDate(entry.createdAt)}
+                                    </td>
+                                    <td className="py-4 text-right">
+                                        {deletingId === entry.id ? (
+                                            <div className="flex items-center justify-end gap-2">
+                                                <button
+                                                    onClick={() => setDeletingId(null)}
+                                                    className="p-2 text-ivory/40 hover:text-ivory transition-colors"
+                                                    title="Cancel"
+                                                >
+                                                    <RotateCcw size={16} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(entry.id)}
+                                                    disabled={submitting}
+                                                    className="p-2 text-red-400/60 hover:text-red-400 transition-colors disabled:opacity-30"
+                                                    title="Confirm Delete"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => setDeletingId(entry.id)}
+                                                className="p-2 text-ivory/20 hover:text-red-400 transition-colors"
+                                                title="Delete RSVP"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
