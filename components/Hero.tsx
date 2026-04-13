@@ -90,11 +90,12 @@ export const Hero: React.FC = () => {
         }}
       >
         <picture className="absolute inset-0 w-full h-full">
-          <source media="(min-width: 1024px)" srcSet="/images/hero-landscae.png" />
+          <source media="(min-width: 1024px)" srcSet="/images/hero-landscae.png" fetchPriority="high" />
           <img
             src="/images/hero.jpg"
             alt="Vita & Jessen"
             className="w-full h-full object-cover object-[center_35%] lg:object-center"
+            fetchPriority="high"
           />
         </picture>
         <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>

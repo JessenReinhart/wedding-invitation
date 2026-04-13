@@ -33,7 +33,7 @@ export const Couple: React.FC = () => {
                     <picture className="w-full h-full absolute inset-0">
                         <source media="(min-width: 1024px)" srcSet="/images/couple-landscape.jpg" />
                         <img
-                            src="/images/couple.png"
+                            src="/images/couple.jpg"
                             alt="Vita and Jessen"
                             className="w-full h-full object-cover object-[center_35%] lg:object-center"
                         />

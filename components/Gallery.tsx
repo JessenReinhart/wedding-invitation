@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Skeleton } from './ui/Skeleton';
 
 // We hardcode the 19 gallery image paths from our inspection
 const images = [
@@ -28,6 +29,11 @@ const images = [
 export const Gallery: React.FC = () => {
     const { t } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
+
+    const handleImageLoad = (src: string) => {
+        setLoadedImages(prev => ({ ...prev, [src]: true }));
+    };
 
     // Lock body scroll when lightbox is open
     useEffect(() => {
@@ -66,22 +72,27 @@ export const Gallery: React.FC = () => {
                     {images.map((src, index) => (
                         <motion.div
                             key={src}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "50px" }}
-                            transition={{ duration: 0.5, delay: (index % 5) * 0.1 }}
+                            transition={{ duration: 0.6, delay: (index % 4) * 0.1 }}
                             className="relative cursor-pointer overflow-hidden rounded-md group break-inside-avoid shadow-sm hover:shadow-xl transition-shadow"
                             onClick={() => setSelectedImage(src)}
                         >
+                            {!loadedImages[src] && (
+                                <Skeleton className="absolute inset-0 z-0 h-64 md:h-80" />
+                            )}
+                            
                             <motion.div 
                                 layoutId={`gallery-image-${src}`}
-                                className="w-full h-full"
+                                className={`w-full h-full transition-opacity duration-700 ${loadedImages[src] ? 'opacity-100' : 'opacity-0'}`}
                             >
                                 <img
                                     src={src}
                                     alt={`Gallery detail ${index + 1}`}
                                     className="w-full h-auto object-cover block transition-transform duration-700 ease-out group-hover:scale-105"
                                     loading="lazy"
+                                    onLoad={() => handleImageLoad(src)}
                                 />
                             </motion.div>
                             
