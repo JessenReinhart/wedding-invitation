@@ -1,6 +1,7 @@
 import React from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { LoadingProvider } from './contexts/LoadingContext';
+import { MusicProvider } from './contexts/MusicContext';
 import { Hero } from './components/Hero';
 import { Verse } from './components/Verse';
 import { Couple } from './components/Couple';
@@ -13,12 +14,14 @@ import { Gift } from './components/Gift';
 import { Comments } from './components/Comments';
 import { Footer } from './components/Footer';
 import { MusicPlayer } from './components/MusicPlayer';
+import { MobileNavigation } from './components/MobileNavigation';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   return (
     <LanguageProvider>
     <LoadingProvider>
+    <MusicProvider>
       <main className="w-full bg-ivory text-wine selection:bg-wine selection:text-ivory">
         <Navigation />
 
@@ -27,12 +30,12 @@ const App: React.FC = () => {
             <Hero />
             <Verse />
             <Couple />
-            <Gallery />
             <Venue />
             <Event />
             <RSVP />
             <Comments />
             <Gift />
+            <Gallery />
             <Footer />
           </div>
         </AnimatePresence>
@@ -44,7 +47,9 @@ const App: React.FC = () => {
           }}>
         </div>
         <MusicPlayer />
+        <MobileNavigation />
       </main>
+    </MusicProvider>
     </LoadingProvider>
     </LanguageProvider>
   );

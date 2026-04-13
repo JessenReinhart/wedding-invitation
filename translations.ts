@@ -73,8 +73,8 @@ export const translations = {
             ],
             dressCodeTitle: 'Busana: Formal & Elegan',
             dressCodeDesc1: 'Kami mengharapkan kehadiran Anda dengan balutan busana berwarna netral atau earth tone. Sentuhan merah anggur (wine) sangat diapresiasi untuk menyelaraskan suasana.',
-            dressCodeDesc2: 'Bagi tamu wanita, dimohon untuk menghindari busana berwarna Ivory atau Broken White.',
-            dressCodeDesc3: 'Bagi tamu pria, dimohon untuk menghindari busana berwarna Ivory, Broken White, Bronze, atau Cokelat.',
+            dressCodeDesc2: 'Bagi tamu wanita, dimohon untuk menghindari busana berwarna Ivory, Broken White, atau Biru.',
+            dressCodeDesc3: 'Bagi tamu pria, dimohon untuk menghindari busana berwarna Ivory, Broken White, Bronze, Cokelat, atau Biru.',
         },
         rsvp: {
             title: 'Konfirmasi',
@@ -212,8 +212,8 @@ export const translations = {
             ],
             dressCodeTitle: 'Dress Code: Formal & Elegant',
             dressCodeDesc1: 'We\'d love for you to dress in neutral or earth-tone attire. A touch of wine red would beautifully complement the atmosphere.',
-            dressCodeDesc2: 'For female guests, please kindly avoid wearing Ivory or Broken White.',
-            dressCodeDesc3: 'For male guests, please kindly avoid wearing Ivory, Broken White, Bronze, or Chocolate.',
+            dressCodeDesc2: 'For female guests, please kindly avoid wearing Ivory, Broken White, or Blue.',
+            dressCodeDesc3: 'For male guests, please kindly avoid wearing Ivory, Broken White, Bronze, Chocolate, or Blue.',
         },
         rsvp: {
             title: 'RSVP',
@@ -351,8 +351,8 @@ export const translations = {
             ],
             dressCodeTitle: '드레스 코드: 포멀 & 엘레강스',
             dressCodeDesc1: '중성적인 색상이나 어스톤 의상을 착용해 주시기를 부탁드립니다. 와인 레드 컬러로 포인트를 주시면 분위기와 잘 어우러집니다.',
-            dressCodeDesc2: '여성 하객분들께서는 아이보리나 브로큰 화이트 색상의 의상은 피해주시면 감사하겠습니다.',
-            dressCodeDesc3: '남성 하객분들께서는 아이보리, 브로큰 화이트, 브론즈, 초콜릿 색상의 의상은 피해주시면 감사하겠습니다.',
+            dressCodeDesc2: '여성 하객분들께서는 아이보리, 브로큰 화이트, 블루 색상의 의상은 피해주시면 감사하겠습니다.',
+            dressCodeDesc3: '남성 하객분들께서는 아이보리, 브로큰 화이트, 브론즈, 초콜릿, 블루 색상의 의상은 피해주시면 감사하겠습니다.',
         },
         rsvp: {
             title: '참석 여부',
