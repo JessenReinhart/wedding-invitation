@@ -35,6 +35,7 @@ export const Navigation: React.FC = () => {
 
   const navItems = [
     { label: t('nav.bride'), href: '#hero' }, // Using #hero for Bride as it is the top section often or closely related, originally #hero in constants
+    { label: t('nav.gallery'), href: '#gallery' },
     { label: t('nav.location'), href: '#venue' },
     { label: t('nav.event'), href: '#event' },
     { label: t('nav.rsvp'), href: '#rsvp' },

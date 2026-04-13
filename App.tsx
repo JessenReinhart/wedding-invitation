@@ -4,6 +4,7 @@ import { LoadingProvider } from './contexts/LoadingContext';
 import { Hero } from './components/Hero';
 import { Verse } from './components/Verse';
 import { Couple } from './components/Couple';
+import { Gallery } from './components/Gallery';
 import { Venue } from './components/Venue';
 import { Event } from './components/Event';
 import { RSVP } from './components/RSVP';
@@ -11,6 +12,7 @@ import { Navigation } from './components/Navigation';
 import { Gift } from './components/Gift';
 import { Comments } from './components/Comments';
 import { Footer } from './components/Footer';
+import { MusicPlayer } from './components/MusicPlayer';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
@@ -25,6 +27,7 @@ const App: React.FC = () => {
             <Hero />
             <Verse />
             <Couple />
+            <Gallery />
             <Venue />
             <Event />
             <RSVP />
@@ -40,6 +43,7 @@ const App: React.FC = () => {
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`
           }}>
         </div>
+        <MusicPlayer />
       </main>
     </LoadingProvider>
     </LanguageProvider>

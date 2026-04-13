@@ -4,12 +4,17 @@ export const translations = {
     id: {
         nav: {
             bride: 'Mempelai',
+            gallery: 'Galeri',
             location: 'Lokasi',
             event: 'Acara',
             rsvp: 'Konfirmasi',
             wishes: 'Ucapan',
             gift: 'Tanda Kasih',
             registry: 'Registri',
+        },
+        gallery: {
+            title: 'Galeri',
+            memories: 'KEBAHAGIAAN KAMI',
         },
         hero: {
             location: 'Jakarta',
@@ -128,12 +133,17 @@ export const translations = {
     en: {
         nav: {
             bride: 'The Couple',
+            gallery: 'Gallery',
             location: 'Location',
             event: 'Events',
             rsvp: 'RSVP',
             wishes: 'Wishes',
             gift: 'Blessing',
             registry: 'Registry',
+        },
+        gallery: {
+            title: 'Gallery',
+            memories: 'OUR HAPPINESS',
         },
         hero: {
             location: 'Jakarta',
@@ -252,12 +262,17 @@ export const translations = {
     ko: {
         nav: {
             bride: '신랑 신부',
+            gallery: '갤러리',
             location: '장소',
             event: '일정',
             rsvp: '참석 여부',
             wishes: '축하 메시지',
             gift: '축의금',
             registry: '위시리스트',
+        },
+        gallery: {
+            title: '갤러리',
+            memories: '우리의 행복',
         },
         hero: {
             location: '자카르타',
