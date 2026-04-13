@@ -46,19 +46,29 @@ export const translations = {
             date: '02 Mei 2026',
             items: [
                 {
-                    time: "09:00",
+                    time: "08:30",
+                    title: "Penyambutan",
+                    description: "Prosesi penyambutan kedatangan keluarga mempelai pria."
+                },
+                {
+                    time: "08:55",
                     title: "Akad Nikah",
-                    description: "Janji suci di hadapan keluarga dan kerabat terdekat."
+                    description: "Janji suci, pembacaan izin menikah, Ijab Qobul, dan sungkeman."
                 },
                 {
                     time: "11:00",
-                    title: "Resepsi Makan Siang",
-                    description: "Jamuan makan siang intim dengan hidangan kuliner nusantara modern."
+                    title: "Resepsi",
+                    description: "Perayaan hangat dan ramah tamah bersama tamu undangan."
                 },
                 {
-                    time: "13:00",
-                    title: "Hiburan & Permainan",
-                    description: "Momen santai penuh tawa, permainan, dan musik."
+                    time: "11:30",
+                    title: "Makan Siang",
+                    description: "Jamuan makan siang dengan hidangan kuliner pilihan."
+                },
+                {
+                    time: "12:00",
+                    title: "Hiburan & Ramah Tamah",
+                    description: "Momen kebersamaan dengan berbagai hiburan pilihan."
                 }
             ],
             dressCodeTitle: 'Busana: Formal & Elegan',
@@ -175,19 +185,29 @@ export const translations = {
             date: 'May 02, 2026',
             items: [
                 {
-                    time: "09:00",
+                    time: "08:30",
+                    title: "Procession",
+                    description: "Welcoming ceremony for the groom's family."
+                },
+                {
+                    time: "08:55",
                     title: "Holy Matrimony",
-                    description: "Sacred vows in the presence of family and closest relatives."
+                    description: "Sacred vows, marriage permit reading, Ijab Qobul, and sungkeman."
                 },
                 {
                     time: "11:00",
-                    title: "Lunch Reception",
-                    description: "An intimate lunch featuring modern Indonesian culinary delights."
+                    title: "Reception",
+                    description: "Warm celebration and mingling with honored guests."
                 },
                 {
-                    time: "13:00",
-                    title: "Entertainment & Games",
-                    description: "Relaxed moments full of laughter, games, and music."
+                    time: "11:30",
+                    title: "Lunch",
+                    description: "Intimate lunch featuring curated culinary delights."
+                },
+                {
+                    time: "12:00",
+                    title: "Leisure Activities",
+                    description: "Relaxed moments with interactive entertainment."
                 }
             ],
             dressCodeTitle: 'Dress Code: Formal & Elegant',
@@ -304,19 +324,29 @@ export const translations = {
             date: '2026년 5월 2일',
             items: [
                 {
-                    time: "09:00",
+                    time: "08:30",
+                    title: "환영 행사",
+                    description: "신랑 가족 환영 및 예식 입장 순서."
+                },
+                {
+                    time: "08:55",
                     title: "결혼 서약식",
-                    description: "가족과 가장 가까운 친지들 앞에서 맺는 성스러운 서약."
+                    description: "성스러운 서약, 혼인 서약, 그리고 부모님께 드리는 인사."
                 },
                 {
                     time: "11:00",
-                    title: "점심 리셉션",
-                    description: "현대적인 인도네시아 요리와 함께하는 오붓한 점심 식사."
+                    title: "리셉션",
+                    description: "하객들과 함께하는 따뜻한 축하의 시간."
                 },
                 {
-                    time: "13:00",
-                    title: "엔터테인먼트 & 게임",
-                    description: "웃음과 게임, 음악이 가득한 편안한 시간."
+                    time: "11:30",
+                    title: "점심 식사",
+                    description: "엄선된 요리와 함께하는 오붓한 점심 식사."
+                },
+                {
+                    time: "12:00",
+                    title: "소셜 시간",
+                    description: "다양한 활동과 함께하는 여유로운 시간."
                 }
             ],
             dressCodeTitle: '드레스 코드: 포멀 & 엘레강스',
