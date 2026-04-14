@@ -138,7 +138,7 @@ export const Hero: React.FC = () => {
                       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                       className="flex flex-col items-center gap-3 max-w-[22rem] md:max-w-md px-6 text-center text-wine/70 overflow-hidden"
                     >
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
                         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -146,7 +146,7 @@ export const Hero: React.FC = () => {
                       >
                         {t('hero.dear')}
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
                         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -154,7 +154,7 @@ export const Hero: React.FC = () => {
                       >
                         {guestName}
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
                         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -217,54 +217,41 @@ export const Hero: React.FC = () => {
       </motion.div>
 
       {/* Guest Name Block - Desktop: absolute top to avoid blocking the couple */}
-      {guestName && (
-        <motion.div
-          style={{ opacity }}
-          className="absolute top-36 z-20 hidden lg:flex flex-col items-center"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className={`flex flex-col items-center transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow' : 'text-wine'}`}
-          >
-            <span className="font-sans text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
-              {t('hero.dear')}
-            </span>
-            <h2 className="font-serif italic text-4xl text-center opacity-90 drop-shadow">
-              {guestName}
-            </h2>
-          </motion.div>
-        </motion.div>
-      )}
+      {/* Guest Name Block is now integrated into the main content block for better flow */}
+
 
       <motion.div
         style={{ y, opacity, scale }}
-        className={`relative z-10 flex flex-col items-center justify-center pb-56 pt-32 md:pt-56 lg:pt-56 w-full px-4 gap-12 md:gap-16 transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow' : 'text-wine'}`}
+        className={`relative z-10 flex flex-col items-center justify-center min-h-screen py-10 md:py-16 lg:py-20 w-full px-4 gap-4 md:gap-6 lg:gap-8 transition-colors duration-1000 ${loadState === 'loaded' ? 'text-ivory drop-shadow-lg' : 'text-wine'}`}
+
+
+
       >
-        {/* Guest Name Block - Mobile: in-flow, original position */}
+        {/* Guest Name Block - Integrated in-flow for all screen sizes */}
         {guestName && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="mb-8 md:mb-12 flex lg:hidden flex-col items-center"
+            className="mb-4 md:mb-6 lg:mb-8 mt-12 md:mt-16 lg:mt-14 flex flex-col items-center"
           >
-            <span className="font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-center mb-2 opacity-80">
+            <span className="font-sans text-[10px] md:text-sm tracking-[0.35em] uppercase text-center mb-1 md:mb-2 opacity-80">
               {t('hero.dear')}
             </span>
-            <h2 className="font-serif italic text-2xl md:text-4xl text-center opacity-90 drop-shadow">
+            <h2 className="font-serif italic text-2xl md:text-4xl lg:text-4xl text-center opacity-90 drop-shadow-sm px-4">
               {guestName}
             </h2>
           </motion.div>
         )}
+
         <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-8">
           <motion.div style={{ x: textLeftX }}>
             <motion.h1
               initial={{ opacity: 0, scale: 0.8, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
+              className="font-display text-[clamp(3.5rem,15vw,8rem)] lg:text-[clamp(6rem,7vw,12rem)] leading-[0.85] tracking-tighter uppercase text-center transition-colors duration-1000"
+
             >
               Jessen
             </motion.h1>
@@ -285,7 +272,8 @@ export const Hero: React.FC = () => {
               initial={{ opacity: 0, scale: 0.8, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-              className="font-display text-[15vw] lg:text-[7vw] xl:text-[6vw] leading-[0.8] tracking-tighter uppercase text-center transition-colors duration-1000"
+              className="font-display text-[clamp(3.5rem,15vw,8rem)] lg:text-[clamp(6rem,7vw,12rem)] leading-[0.85] tracking-tighter uppercase text-center transition-colors duration-1000"
+
             >
               Vita
             </motion.h1>
@@ -297,10 +285,10 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="flex flex-col items-center justify-center gap-2 md:gap-3 text-[10px] md:text-xs font-sans tracking-[0.25em] md:tracking-[0.3em] uppercase text-center transition-colors duration-1000"
+          className="flex flex-col items-center justify-center gap-2 md:gap-3 text-[10px] md:text-[11px] font-sans tracking-[0.25em] md:tracking-[0.3em] uppercase text-center transition-colors duration-1000"
         >
-          <span className="font-semibold tracking-[0.4em] mb-1">02 MAY 2026</span>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 opacity-90 drop-shadow">
+          <span className="font-semibold tracking-[0.4em] mb-1 drop-shadow-sm">02 MAY 2026</span>
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 opacity-90 drop-shadow-sm">
             <span>{t('hero.location')}</span>
             <span className={`hidden md:block w-1 h-1 rounded-full transition-colors duration-1000 ${loadState === 'loaded' ? 'bg-ivory/50' : 'bg-wine/50'}`}></span>
             <span>{t('hero.venue')}</span>
@@ -325,7 +313,7 @@ export const Hero: React.FC = () => {
       </motion.div>
 
       {/* Gradient transition to next section */}
-      <div className="absolute bottom-0 left-0 w-full h-56 bg-gradient-to-t from-ivory to-transparent pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-36 bg-gradient-to-t from-ivory to-transparent pointer-events-none z-10" />
     </section>
   );
 };
