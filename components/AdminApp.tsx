@@ -12,6 +12,7 @@ import {
     type RegistryItem,
     type NewRegistryItem,
 } from '../services/registry';
+import { subscribeToRegistryVisits } from '../services/tracker';
 
 const emptyForm: Omit<NewRegistryItem, 'order'> = {
     name_id: '',
@@ -34,13 +35,22 @@ export const AdminApp: React.FC = () => {
     const [editForm, setEditForm] = useState(emptyForm);
     const [submitting, setSubmitting] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [pageViews, setPageViews] = useState<number>(0);
 
     useEffect(() => {
-        const unsubscribe = subscribeToRegistryItems((data) => {
+        const unsubscribeItems = subscribeToRegistryItems((data) => {
             setItems(data);
             setLoading(false);
         });
-        return () => unsubscribe();
+        
+        const unsubscribeVisits = subscribeToRegistryVisits((views) => {
+            setPageViews(views);
+        });
+
+        return () => {
+            unsubscribeItems();
+            unsubscribeVisits();
+        };
     }, []);
 
     // ─── ADD ────────────────────────────────────────────
@@ -169,7 +179,7 @@ export const AdminApp: React.FC = () => {
             {activeTab === 'registry' && (
                 <>
                 {/* Stats Bar */}
-                <div className="grid grid-cols-3 gap-4 mb-10">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                     <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
                         <p className="font-display text-3xl text-ivory">{items.length}</p>
                         <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Total Items</p>
@@ -181,6 +191,10 @@ export const AdminApp: React.FC = () => {
                     <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
                         <p className="font-display text-3xl text-ivory">{items.filter(i => i.bought).length}</p>
                         <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Purchased</p>
+                    </div>
+                    <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
+                        <p className="font-display text-3xl text-ivory">{pageViews}</p>
+                        <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Page Views</p>
                     </div>
                 </div>
 

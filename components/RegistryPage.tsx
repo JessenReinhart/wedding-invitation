@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Registry } from './Registry';
+import { logRegistryVisit } from '../services/tracker';
 
 export const RegistryPage: React.FC = () => {
     const { language, setLanguage, t } = useLanguage();
+
+    useEffect(() => {
+        logRegistryVisit();
+    }, []);
 
     return (
         <main className="w-full min-h-screen bg-ivory text-wine selection:bg-wine selection:text-ivory">
