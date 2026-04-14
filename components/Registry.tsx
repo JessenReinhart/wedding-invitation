@@ -95,7 +95,7 @@ export const Registry: React.FC = () => {
                 )}
 
                 {/* Registry Items Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <div className="columns-1 md:columns-2 gap-6 max-w-3xl mx-auto">
                     {items.map((item, index) => (
                         <motion.div
                             key={item.id}
@@ -103,7 +103,7 @@ export const Registry: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 * index }}
-                            className={`group relative overflow-hidden text-left transition-all duration-500 ${item.bought
+                            className={`group relative overflow-hidden text-left transition-all duration-500 break-inside-avoid mb-6 ${item.bought
                                 ? 'bg-wine/[0.03] border border-wine/5 opacity-70'
                                 : 'bg-wine/5 border border-wine/10 hover:bg-wine/10'
                                 }`}
@@ -132,30 +132,29 @@ export const Registry: React.FC = () => {
                                         {getItemName(item)}
                                     </h3>
 
-                                    {item.bought ? (
-                                        <span className="inline-flex items-center gap-1 font-sans text-xs tracking-widest uppercase text-wine/40">
+                                    {item.bought && (
+                                        <span className="inline-flex items-center gap-1 font-sans text-xs tracking-widest uppercase text-wine/40 mt-1">
                                             {t('registry.purchased')}
                                             {item.boughtBy && ` — ${item.boughtBy}`}
                                         </span>
-                                    ) : (
-                                        <a
-                                            href={item.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1 font-sans text-xs tracking-widest uppercase text-wine/50 group-hover:text-wine/80 transition-colors duration-300"
-                                        >
-                                            {t('registry.viewItem')} <ExternalLink size={12} />
-                                        </a>
                                     )}
                                 </div>
                             </div>
 
-                            {/* Mark as Bought Button */}
+                            {/* Actions */}
                             {!item.bought && (
-                                <div className="px-8 pb-6">
+                                <div className="px-6 pb-6 flex flex-col min-[450px]:flex-row gap-3">
+                                    <a
+                                        href={item.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-1 py-3 px-2 border border-wine bg-wine text-ivory font-sans text-[10px] tracking-widest uppercase hover:bg-wine-dark hover:border-wine-dark transition-all duration-300 flex items-center justify-center gap-1.5 min-w-[120px]"
+                                    >
+                                        {t('registry.viewItem')} <ExternalLink size={12} />
+                                    </a>
                                     <button
                                         onClick={() => { setConfirmingId(item.id); setBuyerName(''); }}
-                                        className="w-full py-3 border border-wine/20 text-wine/60 font-sans text-xs tracking-widest uppercase hover:bg-wine hover:text-ivory hover:border-wine transition-all duration-300"
+                                        className="flex-[1.2] py-3 px-2 border border-wine/20 text-wine/60 font-sans text-[10px] tracking-widest uppercase hover:bg-wine hover:text-ivory hover:border-wine transition-all duration-300 leading-tight"
                                     >
                                         {t('registry.markAsBought')}
                                     </button>
