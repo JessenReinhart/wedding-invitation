@@ -19,7 +19,7 @@ export const RSVP: React.FC = () => {
     lastName: '',
     email: '',
     dietary: '',
-    attendance: null,
+    attendance: 'yes',
     pax: 1
   });
   const [submitted, setSubmitted] = useState(false);
@@ -222,20 +222,30 @@ export const RSVP: React.FC = () => {
             {/* Attendance Toggle */}
             <div className="py-8 border-b border-ivory/20">
               <label className="block text-xs uppercase tracking-[0.2em] text-ivory/60 mb-6">{t('rsvp.attendance')}</label>
-              <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <button
                   type="button"
                   onClick={() => handleAttendance('yes')}
-                  className={`font-display text-2xl md:text-5xl text-left transition-colors duration-300 hover:text-ivory ${formData.attendance === 'yes' ? 'text-ivory' : 'text-ivory/30'}`}
+                  className={`relative px-6 py-5 md:px-8 md:py-6 border flex items-center justify-between transition-all duration-300 w-full md:w-1/2 ${formData.attendance === 'yes' ? 'border-ivory bg-ivory/10 text-ivory' : 'border-ivory/30 hover:border-ivory/50 text-ivory/60'}`}
                 >
-                  {t('rsvp.attending')}
+                  <span className="font-display text-2xl md:text-3xl text-left">
+                    {t('rsvp.attending')}
+                  </span>
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${formData.attendance === 'yes' ? 'border-ivory' : 'border-ivory/40'}`}>
+                    {formData.attendance === 'yes' && <div className="w-3 h-3 rounded-full bg-ivory" />}
+                  </div>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleAttendance('no')}
-                  className={`font-display text-2xl md:text-5xl text-left transition-colors duration-300 hover:text-ivory ${formData.attendance === 'no' ? 'text-ivory' : 'text-ivory/30'}`}
+                  className={`relative px-6 py-5 md:px-8 md:py-6 border flex items-center justify-between transition-all duration-300 w-full md:w-1/2 ${formData.attendance === 'no' ? 'border-ivory bg-ivory/10 text-ivory' : 'border-ivory/30 hover:border-ivory/50 text-ivory/60'}`}
                 >
-                  {t('rsvp.notAttending')}
+                  <span className="font-display text-2xl md:text-3xl text-left">
+                    {t('rsvp.notAttending')}
+                  </span>
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${formData.attendance === 'no' ? 'border-ivory' : 'border-ivory/40'}`}>
+                    {formData.attendance === 'no' && <div className="w-3 h-3 rounded-full bg-ivory" />}
+                  </div>
                 </button>
               </div>
             </div>
