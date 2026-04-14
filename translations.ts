@@ -12,6 +12,16 @@ export const translations = {
             gift: 'Tanda Kasih',
             registry: 'Registri',
         },
+        fab: {
+            tapToOpenMenu: 'Ketuk untuk buka menu',
+        },
+        music: {
+            label: 'Musik',
+            tapToPlay: 'Ketuk musik untuk memutar',
+            clickToPlay: 'Klik untuk memutar musik',
+            play: 'Putar Musik',
+            pause: 'Jeda Musik',
+        },
         gallery: {
             title: 'Galeri',
             memories: 'KEBAHAGIAAN KAMI',
@@ -72,9 +82,9 @@ export const translations = {
                 }
             ],
             dressCodeTitle: 'Busana: Formal & Elegan',
-            dressCodeDesc1: 'Kami mengharapkan kehadiran Anda dengan balutan busana berwarna netral atau earth tone. Sentuhan merah anggur (wine) sangat diapresiasi untuk menyelaraskan suasana.',
-            dressCodeDesc2: 'Bagi tamu wanita, dimohon untuk menghindari busana berwarna Ivory, Broken White, atau Biru.',
-            dressCodeDesc3: 'Bagi tamu pria, dimohon untuk menghindari busana berwarna Ivory, Broken White, Bronze, Cokelat, atau Biru.',
+            dressCodeDesc1: 'Kami mengharapkan kehadiran Anda dengan balutan busana formal & elegan.',
+            dressCodeDesc2: 'Bagi tamu wanita, dimohon untuk menghindari busana berwarna Taupee atau Biru.',
+            dressCodeDesc3: 'Bagi tamu pria, dimohon untuk menghindari busana berwarna Bronze, Cokelat Tua (Chocolate Brown), atau Biru.',
         },
         rsvp: {
             title: 'Konfirmasi',
@@ -151,6 +161,16 @@ export const translations = {
             gift: 'Blessing',
             registry: 'Registry',
         },
+        fab: {
+            tapToOpenMenu: 'Tap to open menu',
+        },
+        music: {
+            label: 'Music',
+            tapToPlay: 'Tap music to play',
+            clickToPlay: 'Click to play music',
+            play: 'Play Music',
+            pause: 'Pause Music',
+        },
         gallery: {
             title: 'Gallery',
             memories: 'OUR HAPPINESS',
@@ -211,9 +231,9 @@ export const translations = {
                 }
             ],
             dressCodeTitle: 'Dress Code: Formal & Elegant',
-            dressCodeDesc1: 'We\'d love for you to dress in neutral or earth-tone attire. A touch of wine red would beautifully complement the atmosphere.',
-            dressCodeDesc2: 'For female guests, please kindly avoid wearing Ivory, Broken White, or Blue.',
-            dressCodeDesc3: 'For male guests, please kindly avoid wearing Ivory, Broken White, Bronze, Chocolate, or Blue.',
+            dressCodeDesc1: 'We\'d love for you to dress in formal & elegant attire.',
+            dressCodeDesc2: 'For female guests, please kindly avoid wearing Taupee or Blue.',
+            dressCodeDesc3: 'For male guests, please kindly avoid wearing Bronze, Chocolate Brown, or Blue.',
         },
         rsvp: {
             title: 'RSVP',
@@ -290,6 +310,16 @@ export const translations = {
             gift: '축의금',
             registry: '위시리스트',
         },
+        fab: {
+            tapToOpenMenu: '탭하여 메뉴 열기',
+        },
+        music: {
+            label: '음악',
+            tapToPlay: '탭하여 음악 재생',
+            clickToPlay: '클릭하여 음악 재생',
+            play: '음악 재생',
+            pause: '음악 일시정지',
+        },
         gallery: {
             title: '갤러리',
             memories: '우리의 행복',
@@ -350,9 +380,9 @@ export const translations = {
                 }
             ],
             dressCodeTitle: '드레스 코드: 포멀 & 엘레강스',
-            dressCodeDesc1: '중성적인 색상이나 어스톤 의상을 착용해 주시기를 부탁드립니다. 와인 레드 컬러로 포인트를 주시면 분위기와 잘 어우러집니다.',
-            dressCodeDesc2: '여성 하객분들께서는 아이보리, 브로큰 화이트, 블루 색상의 의상은 피해주시면 감사하겠습니다.',
-            dressCodeDesc3: '남성 하객분들께서는 아이보리, 브로큰 화이트, 브론즈, 초콜릿, 블루 색상의 의상은 피해주시면 감사하겠습니다.',
+            dressCodeDesc1: '포멀 & 엘레강스 스타일의 의상을 착용해 주시기를 부탁드립니다.',
+            dressCodeDesc2: '여성 하객분들께서는 Taupee, 블루 색상의 의상은 피해주시면 감사하겠습니다.',
+            dressCodeDesc3: '남성 하객분들께서는 브론즈, 초콜릿 브라운, 블루 색상의 의상은 피해주시면 감사하겠습니다.',
         },
         rsvp: {
             title: '참석 여부',
