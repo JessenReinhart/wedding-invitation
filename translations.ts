@@ -68,7 +68,7 @@ export const translations = {
                     description: "Janji suci, pembacaan izin menikah, Ijab Qobul, dan sungkeman."
                 },
                 {
-                    time: "11:00",
+                    time: "10:30",
                     title: "Resepsi",
                     description: "Perayaan hangat dan ramah tamah bersama tamu undangan."
                 },
@@ -219,7 +219,7 @@ export const translations = {
                     description: "Sacred vows, marriage permit reading, Ijab Qobul, and sungkeman."
                 },
                 {
-                    time: "11:00",
+                    time: "10:30",
                     title: "Reception",
                     description: "Warm celebration and mingling with honored guests."
                 },
@@ -370,7 +370,7 @@ export const translations = {
                     description: "성스러운 서약, 혼인 서약, 그리고 부모님께 드리는 인사."
                 },
                 {
-                    time: "11:00",
+                    time: "10:30",
                     title: "리셉션",
                     description: "하객들과 함께하는 따뜻한 축하의 시간."
                 },
