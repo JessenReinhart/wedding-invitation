@@ -43,7 +43,7 @@ export async function submitRSVP(data: RSVPInput): Promise<string> {
         lastName: data.lastName,
         email: data.email,
         dietary: data.dietary,
-        attendance: data.attendance,
+        attendance: data.pax > 1 ? 'yes' : data.attendance,
         pax: data.pax,
         createdAt: serverTimestamp(),
     });
@@ -59,10 +59,14 @@ export function subscribeToRSVPs(
     const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'));
 
     return onSnapshot(q, (snapshot) => {
-        const entries: RSVPEntry[] = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-        })) as RSVPEntry[];
+        const entries: RSVPEntry[] = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                ...data,
+                attendance: data.pax > 1 ? 'yes' : data.attendance,
+            };
+        }) as RSVPEntry[];
         callback(entries);
     });
 }
