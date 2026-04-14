@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useRef, useEffect } from 'r
 interface MusicContextType {
     isPlaying: boolean;
     hasInteracted: boolean;
+    play: () => void;
+    pause: () => void;
     togglePlay: () => void;
 }
 
@@ -14,31 +16,45 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        // Create audio element once
         const audio = new Audio('/music/turning-page.mp3');
         audio.loop = true;
         audio.preload = 'auto';
         audioRef.current = audio;
-
-        // Attempt to autoplay
-        const playAttempt = audio.play();
-        if (playAttempt !== undefined) {
-            playAttempt
-                .then(() => {
-                    setIsPlaying(true);
-                    setHasInteracted(true);
-                })
-                .catch((error) => {
-                    console.log("Autoplay blocked:", error);
-                    setIsPlaying(false);
-                });
-        }
 
         const onPlay = () => setIsPlaying(true);
         const onPause = () => setIsPlaying(false);
 
         audio.addEventListener('play', onPlay);
         audio.addEventListener('pause', onPause);
+
+        const attemptPlay = () => {
+            const storedMusicEnabled = (() => {
+                try {
+                    return window.localStorage.getItem('wedding_invitation_music_enabled') === '1';
+                } catch {
+                    return false;
+                }
+            })();
+
+            if (storedMusicEnabled) {
+                const playAttempt = audio.play();
+                if (playAttempt !== undefined) {
+                    playAttempt.then(() => setHasInteracted(true)).catch(() => {
+                        // If autoplay fails, we wait for any interaction to trigger it
+                        const playOnInteraction = () => {
+                            audio.play().then(() => setHasInteracted(true)).catch(() => undefined);
+                            document.removeEventListener('click', playOnInteraction);
+                            document.removeEventListener('touchstart', playOnInteraction);
+                        };
+                        document.addEventListener('click', playOnInteraction);
+                        document.addEventListener('touchstart', playOnInteraction);
+                    });
+                }
+            }
+        };
+
+        // Try playing immediately, browsers sometimes allow it right away if there was prior interaction on the domain
+        attemptPlay();
 
         return () => {
             audio.removeEventListener('play', onPlay);
@@ -48,18 +64,36 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         };
     }, []);
 
-    const togglePlay = () => {
+    const play = () => {
         if (!audioRef.current) return;
         setHasInteracted(true);
+        try {
+            window.localStorage.setItem('wedding_invitation_music_enabled', '1');
+        } catch {
+            undefined;
+        }
+        const playAttempt = audioRef.current.play();
+        if (playAttempt !== undefined) {
+            playAttempt.catch(() => undefined);
+        }
+    };
+
+    const pause = () => {
+        if (!audioRef.current) return;
+        setHasInteracted(true);
+        audioRef.current.pause();
+    };
+
+    const togglePlay = () => {
         if (isPlaying) {
-            audioRef.current.pause();
+            pause();
         } else {
-            audioRef.current.play();
+            play();
         }
     };
 
     return (
-        <MusicContext.Provider value={{ isPlaying, hasInteracted, togglePlay }}>
+        <MusicContext.Provider value={{ isPlaying, hasInteracted, play, pause, togglePlay }}>
             {children}
         </MusicContext.Provider>
     );

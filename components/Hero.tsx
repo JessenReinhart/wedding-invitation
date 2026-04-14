@@ -1,12 +1,23 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useLoadingState } from '../contexts/LoadingContext';
+import { useMusic } from '../contexts/MusicContext';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t, isBatak, guestName } = useLanguage();
   const loadState = useLoadingState();
+  const { play } = useMusic();
+
+  const [isInvitationOpened, setIsInvitationOpened] = useState<boolean>(() => {
+    try {
+      return window.localStorage.getItem('wedding_invitation_opened') === '1';
+    } catch {
+      return false;
+    }
+  });
 
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -34,53 +45,152 @@ export const Hero: React.FC = () => {
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
   const imageBlur = useTransform(scrollYProgress, [0, 0.6], isMobile ? ["blur(0px)", "blur(0px)"] : ["blur(0px)", "blur(12px)"]);
 
+  const isHeroReady = loadState === 'loaded' || loadState === 'timeout';
+  const showWelcome = isHeroReady && !isInvitationOpened;
+  const showOverlay = loadState === 'loading' || showWelcome;
+
+  useEffect(() => {
+    if (showOverlay) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+    document.body.style.overflow = 'unset';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showOverlay]);
+
+  const handleOpenInvitation = () => {
+    try {
+      window.localStorage.setItem('wedding_invitation_opened', '1');
+    } catch {
+      undefined;
+    }
+    setIsInvitationOpened(true);
+    play();
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section
       id="hero"
       ref={containerRef}
       className="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-ivory transition-colors duration-1000"
     >
-      <AnimatePresence>
-        {loadState === 'loading' && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="fixed inset-0 z-[9999] bg-ivory flex flex-col items-center justify-center pointer-events-auto"
-          >
-            {/* Monogram */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {showOverlay && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="flex flex-col items-center"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, y: "-10%", filter: "blur(12px)" }}
+              transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+              className="fixed inset-0 z-[2147483647] bg-ivory flex flex-col items-center justify-center pointer-events-auto origin-top"
             >
-              <span className="font-display text-6xl md:text-8xl text-wine tracking-tighter leading-none">
-                V & J
-              </span>
+              {/* Monogram */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="flex flex-col items-center w-full"
+                layout
+              >
+                <motion.span layout="position" className="font-display text-6xl md:text-8xl text-wine tracking-tighter leading-none">
+                  V & J
+                </motion.span>
 
-              {/* Divider doubles as loading bar */}
-              <div className="mt-6 mb-6 w-20 h-px bg-wine/10 overflow-hidden rounded-full">
-                <motion.div
-                  className="h-full bg-wine/40 rounded-full"
-                  initial={{ x: "-100%" }}
-                  animate={{ x: "100%" }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </div>
+                {/* Divider doubles as loading bar */}
+                <motion.div layout="position" className="mt-6 mb-6 w-20 h-px bg-wine/10 overflow-hidden rounded-full relative">
+                  <AnimatePresence mode="wait">
+                    {loadState === 'loading' ? (
+                      <motion.div
+                        key="loadingBar"
+                        className="absolute inset-0 bg-wine/40 rounded-full"
+                        initial={{ x: "-100%" }}
+                        animate={{ x: "100%" }}
+                        exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                    ) : (
+                      <motion.div
+                        key="separator"
+                        className="absolute inset-0 bg-wine/25 rounded-full"
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ transformOrigin: 'center' }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </motion.div>
 
-              <span className="font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-wine/50">
-                02 · 05 · 2026
-              </span>
+                <motion.span layout="position" className="font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-wine/50">
+                  02 · 05 · 2026
+                </motion.span>
+
+                <AnimatePresence>
+                  {showWelcome && guestName && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                      animate={{ opacity: 1, height: "auto", marginTop: 40 }}
+                      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                      className="flex flex-col items-center gap-3 max-w-[22rem] md:max-w-md px-6 text-center text-wine/70 overflow-hidden"
+                    >
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-sans text-[10px] md:text-xs tracking-[0.35em] uppercase text-wine/60 pt-2"
+                      >
+                        {t('hero.dear')}
+                      </motion.div>
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-serif italic text-4xl md:text-5xl text-wine opacity-90 drop-shadow-sm px-4 text-center"
+                      >
+                        {guestName}
+                      </motion.div>
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-sans text-[10px] md:text-xs tracking-[0.25em] uppercase text-wine/60 mt-1 pb-2"
+                      >
+                        {t('hero.invitationMessage')}
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                  {showWelcome && (
+                    <motion.button
+                      type="button"
+                      initial={{ opacity: 0, y: 20, filter: "blur(4px)", scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                      transition={{ duration: 1, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                      onClick={handleOpenInvitation}
+                      className="mt-12 px-8 py-3 rounded-full bg-wine text-ivory font-sans text-[11px] md:text-xs tracking-[0.35em] uppercase shadow-[0_20px_60px_rgba(0,0,0,0.18)] hover:bg-wine-dark focus:outline-none focus:ring-2 focus:ring-wine/20 transition-all duration-300 hover:scale-105 active:scale-95"
+                    >
+                      {t('hero.openInvitation')}
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Background Image - always rendered, visibility controlled by loadState */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: loadState === 'loaded' ? 1 : 0 }}
+        animate={{ opacity: isHeroReady ? 1 : 0 }}
         transition={{ duration: 1.5 }}
         className="absolute inset-0 z-0"
         style={{
