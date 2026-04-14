@@ -24,6 +24,7 @@ const emptyForm: Omit<NewRegistryItem, 'order'> = {
 };
 
 type Tab = 'registry' | 'rsvp' | 'wishes';
+type SortOption = 'default' | 'name' | 'status' | 'buyer';
 
 export const AdminApp: React.FC = () => {
     const [activeTab, setActiveTab] = useState<Tab>('registry');
@@ -36,6 +37,21 @@ export const AdminApp: React.FC = () => {
     const [submitting, setSubmitting] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [pageViews, setPageViews] = useState<number>(0);
+    const [sortBy, setSortBy] = useState<SortOption>('default');
+
+    const sortedItems = [...items].sort((a, b) => {
+        switch (sortBy) {
+            case 'name':
+                return (a.name_id || a.name_en || '').localeCompare(b.name_id || b.name_en || '');
+            case 'status':
+                return (a.bought === b.bought) ? 0 : a.bought ? -1 : 1;
+            case 'buyer':
+                return (a.boughtBy || '').localeCompare(b.boughtBy || '');
+            case 'default':
+            default:
+                return a.order - b.order || 0;
+        }
+    });
 
     useEffect(() => {
         const unsubscribeItems = subscribeToRegistryItems((data) => {
@@ -201,12 +217,24 @@ export const AdminApp: React.FC = () => {
                 {/* Add Button */}
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="font-display text-xl tracking-wide">Items</h2>
-                    <button
-                        onClick={() => { setShowAddForm(true); setAddForm(emptyForm); }}
-                        className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
-                    >
-                        <Plus size={14} /> Add Item
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value as SortOption)}
+                            className="bg-transparent border border-ivory/20 text-ivory text-xs tracking-widest uppercase font-sans py-3 px-3 focus:outline-none focus:border-ivory/50"
+                        >
+                            <option value="default" className="bg-wine-dark text-white">Sort: Default</option>
+                            <option value="name" className="bg-wine-dark text-white">Sort: Name</option>
+                            <option value="status" className="bg-wine-dark text-white">Sort: Status</option>
+                            <option value="buyer" className="bg-wine-dark text-white">Sort: Buyer</option>
+                        </select>
+                        <button
+                            onClick={() => { setShowAddForm(true); setAddForm(emptyForm); }}
+                            className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
+                        >
+                            <Plus size={14} /> <span className="hidden sm:inline">Add</span>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Add Form */}
@@ -239,7 +267,7 @@ export const AdminApp: React.FC = () => {
 
                 {/* Items List */}
                 <div className="space-y-3">
-                    {items.map((item, index) => (
+                    {sortedItems.map((item, index) => (
                         <div key={item.id}>
                             {editingId === item.id ? (
                                 /* ── Edit Mode ── */
@@ -302,12 +330,12 @@ export const AdminApp: React.FC = () => {
 
                                             {/* Bought Status */}
                                             {item.bought && (
-                                                <div className="text-right hidden md:block">
-                                                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-xs tracking-wider uppercase font-sans">
-                                                        <Check size={12} /> Purchased
+                                                <div className="text-right flex flex-col items-end">
+                                                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-[10px] sm:text-xs tracking-wider uppercase font-sans whitespace-nowrap">
+                                                        <Check size={12} /> <span className="hidden sm:inline">Purchased</span>
                                                     </span>
                                                     {item.boughtBy && (
-                                                        <p className="text-xs text-ivory/30 mt-1 font-sans">by {item.boughtBy}</p>
+                                                        <p className="text-[10px] sm:text-xs text-ivory/60 mt-1 font-sans font-medium">by {item.boughtBy}</p>
                                                     )}
                                                 </div>
                                             )}

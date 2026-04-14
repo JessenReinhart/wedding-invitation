@@ -180,6 +180,19 @@ export const Hero: React.FC = () => {
                     </motion.button>
                   )}
                 </AnimatePresence>
+
+                <AnimatePresence>
+                  {showWelcome && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 1, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                      className="mt-6 font-sans text-[10px] md:text-[11px] tracking-normal normal-case opacity-70 text-wine/80"
+                    >
+                      {t('hero.hashtag')}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             </motion.div>
           )}
@@ -293,6 +306,14 @@ export const Hero: React.FC = () => {
             <span className={`hidden md:block w-1 h-1 rounded-full transition-colors duration-1000 ${loadState === 'loaded' ? 'bg-ivory/50' : 'bg-wine/50'}`}></span>
             <span>{t('hero.venue')}</span>
           </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="mt-2 normal-case tracking-normal opacity-80 text-[11px] md:text-[12px] font-medium"
+          >
+            {t('hero.hashtag')}
+          </motion.div>
         </motion.div>
       </motion.div>
 

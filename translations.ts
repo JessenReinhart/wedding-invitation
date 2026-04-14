@@ -33,6 +33,7 @@ export const translations = {
             dear: 'Kepada Yth.',
             openInvitation: 'Buka Undangan',
             invitationMessage: 'Anda dengan hormat kami undang untuk menghadiri pernikahan kami.',
+            hashtag: '#VitaSaysJesIDo',
         },
         verse: {
             translation: 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir.',
@@ -185,6 +186,7 @@ export const translations = {
             dear: 'Dear',
             openInvitation: 'Open Invitation',
             invitationMessage: 'You are cordially invited to our wedding.',
+            hashtag: '#VitaSaysJesIDo',
         },
         verse: {
             translation: 'And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought.',
@@ -337,6 +339,7 @@ export const translations = {
             dear: '귀하',
             openInvitation: '초대장 열기',
             invitationMessage: '저희 결혼식에 정중히 초대합니다.',
+            hashtag: '#VitaSaysJesIDo',
         },
         verse: {
             translation: '그분의 징표 중 하나는, 너희를 위해 너희 자신들 중에서 배우자를 창조하셨으니, 너희가 그들에게서 평안을 얻고, 너희 사이에 애정과 자비를 두셨느니라. 실로 그 안에는 사색하는 이들을 위한 징표들이 있노라.',
