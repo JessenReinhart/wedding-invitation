@@ -51,6 +51,7 @@ export const translations = {
             description: 'Prosesi pernikahan kami akan dilangsungkan di Amanaia Menteng, dilanjutkan dengan perayaan hangat bersama orang-orang terkasih.',
             directions: 'Petunjuk Arah',
             address: 'Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10410',
+            locationDetail: 'Tepatnya di area Rumah Pohon Atas & Bawah, Amanaia Menteng.\nSetelah Anda melewati gerbang utama dan area kasir, silakan berjalan ke arah kanan dan ikuti jalan setapaknya. Kami menanti kehadiran Anda di sana.',
             openMap: 'Buka Google Maps',
         },
         event: {
@@ -202,6 +203,7 @@ export const translations = {
             description: 'Our wedding ceremony will take place at Amanaia Menteng, followed by a warm celebration with loved ones.',
             directions: 'Directions',
             address: 'Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Central Jakarta City, Jakarta 10410',
+            locationDetail: 'Specifically at the Upper & Lower Treehouse area of Amanaia Menteng.\nOnce you pass the main entrance and cashier, kindly take a right turn and simply follow the path. We look forward to welcoming you there.',
             openMap: 'Open Google Maps',
         },
         event: {
@@ -353,6 +355,7 @@ export const translations = {
             description: '결혼식은 아마나이아 멘텡에서 거행되며, 이후 사랑하는 이들과 함께 따뜻한 축하 연회가 이어집니다.',
             directions: '오시는 길',
             address: 'Jl. Dr. Abdul Rahman Saleh I No.12, Kwitang, Kec. Senen, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10410',
+            locationDetail: '자세한 위치는 아마나이아 멘텡의 위쪽 및 아래쪽 트리하우스(Rumah Pohon Atas & Bawah) 구역입니다.\n정문과 계산대를 지나신 후, 우측으로 방향을 틀어 길을 따라와 주시길 바랍니다. 그곳에서 기쁜 마음으로 여러분을 맞이하겠습니다.',
             openMap: '구글 지도 열기',
         },
         event: {

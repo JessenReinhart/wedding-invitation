@@ -84,9 +84,14 @@ export const Venue: React.FC = () => {
         <div className="mt-24 w-full">
           <div className="flex flex-col items-start text-left mb-10">
             <h3 className="font-display text-3xl md:text-4xl uppercase tracking-wide mb-6">{t('venue.directions')}</h3>
-            <p className="font-sans font-light text-ivory/80 max-w-lg leading-relaxed mb-8">
+            <p className="font-sans font-light text-ivory/80 max-w-lg leading-relaxed mb-4">
               {t('venue.address')}
             </p>
+            {t('venue.locationDetail') && (
+              <p className="font-sans font-light text-ivory/80 max-w-lg leading-relaxed mb-8 whitespace-pre-line">
+                {t('venue.locationDetail')}
+              </p>
+            )}
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=-6.179173700072192,106.84046081165128"
               target="_blank"
