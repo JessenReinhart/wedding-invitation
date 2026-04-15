@@ -34,18 +34,18 @@ export const AdminWishes: React.FC = () => {
     return (
         <div>
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                    <p className="font-display text-3xl text-ivory">{wishes.length}</p>
-                    <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-10">
+                <div className="bg-ivory/5 border border-ivory/10 p-4 sm:p-6 text-center">
+                    <p className="font-display text-2xl sm:text-3xl text-ivory">{wishes.length}</p>
+                    <p className="text-[10px] sm:text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
                         <MessageCircle size={12} /> Total Wishes
                     </p>
                 </div>
-                <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                    <p className="font-display text-3xl text-wine-light animate-pulse">
-                        <Heart size={28} className="inline mr-2" fill="currentColor" />
+                <div className="bg-ivory/5 border border-ivory/10 p-4 sm:p-6 text-center">
+                    <p className="font-display text-2xl sm:text-3xl text-wine-light animate-pulse">
+                        <Heart size={24} className="inline mr-2" fill="currentColor" />
                     </p>
-                    <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Spread the Love</p>
+                    <p className="text-[10px] sm:text-xs tracking-widest uppercase text-ivory/40 mt-1">Spread the Love</p>
                 </div>
             </div>
 
@@ -62,14 +62,14 @@ export const AdminWishes: React.FC = () => {
                     {wishes.map((wish) => (
                         <div 
                             key={wish.id}
-                            className="bg-ivory/5 border border-ivory/10 p-6 md:p-8 hover:bg-ivory/10 transition-all group relative"
+                            className="bg-ivory/5 border border-ivory/10 p-5 sm:p-8 hover:bg-ivory/10 transition-all group relative"
                         >
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-6">
                                 <div className="flex-1">
-                                    <p className="font-serif text-xl text-ivory leading-relaxed mb-4">
+                                    <p className="font-serif text-lg sm:text-xl text-ivory leading-relaxed mb-4 break-words">
                                         "{wish.message}"
                                     </p>
-                                    <div className="flex flex-wrap items-center gap-4 text-xs tracking-widest uppercase text-ivory/40">
+                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[10px] sm:text-xs tracking-widest uppercase text-ivory/40">
                                         <span className="flex items-center gap-1.5 text-ivory/60">
                                             <User size={12} /> {wish.name}
                                         </span>
@@ -81,7 +81,7 @@ export const AdminWishes: React.FC = () => {
                                 
                                 <button
                                     onClick={() => setDeletingId(wish.id)}
-                                    className="p-3 text-ivory/20 hover:text-red-400 hover:bg-red-400/10 rounded-full transition-all self-end md:self-start"
+                                    className="p-3 text-ivory/20 hover:text-red-400 hover:bg-red-400/10 rounded-full transition-all self-end sm:self-start sm:opacity-0 sm:group-hover:opacity-100"
                                     title="Delete Wish"
                                 >
                                     <Trash2 size={18} />
@@ -91,7 +91,7 @@ export const AdminWishes: React.FC = () => {
                             {/* Delete Confirmation Overlay */}
                             {deletingId === wish.id && (
                                 <div className="absolute inset-0 bg-red-950/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-6 text-center border border-red-500/50">
-                                    <p className="font-sans text-sm mb-4">Delete this wish from <strong>{wish.name}</strong>?</p>
+                                    <p className="font-sans text-sm mb-4">Delete wish from <strong>{wish.name}</strong>?</p>
                                     <div className="flex gap-3">
                                         <button 
                                             onClick={() => setDeletingId(null)}
@@ -103,7 +103,7 @@ export const AdminWishes: React.FC = () => {
                                             onClick={() => handleDelete(wish.id)}
                                             className="px-4 py-2 bg-red-600 text-ivory text-xs tracking-widest uppercase font-bold hover:bg-red-700 transition-colors"
                                         >
-                                            Delete Permanent
+                                            Delete
                                         </button>
                                     </div>
                                 </div>

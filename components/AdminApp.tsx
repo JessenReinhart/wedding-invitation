@@ -58,7 +58,7 @@ export const AdminApp: React.FC = () => {
             setItems(data);
             setLoading(false);
         });
-        
+
         const unsubscribeVisits = subscribeToRegistryVisits((views) => {
             setPageViews(views);
         });
@@ -157,31 +157,28 @@ export const AdminApp: React.FC = () => {
                 <div className="max-w-5xl mx-auto flex gap-1 mt-6">
                     <button
                         onClick={() => setActiveTab('registry')}
-                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${
-                            activeTab === 'registry'
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${activeTab === 'registry'
                                 ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
                                 : 'text-ivory/40 border border-transparent hover:text-ivory/70'
-                        }`}
+                            }`}
                     >
                         <Gift size={14} /> Registry
                     </button>
                     <button
                         onClick={() => setActiveTab('rsvp')}
-                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${
-                            activeTab === 'rsvp'
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${activeTab === 'rsvp'
                                 ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
                                 : 'text-ivory/40 border border-transparent hover:text-ivory/70'
-                        }`}
+                            }`}
                     >
                         <Users size={14} /> Guest List
                     </button>
                     <button
                         onClick={() => setActiveTab('wishes')}
-                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${
-                            activeTab === 'wishes'
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${activeTab === 'wishes'
                                 ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
                                 : 'text-ivory/40 border border-transparent hover:text-ivory/70'
-                        }`}
+                            }`}
                     >
                         <Heart size={14} /> Wishes
                     </button>
@@ -190,188 +187,194 @@ export const AdminApp: React.FC = () => {
 
             <main className="max-w-5xl mx-auto px-6 md:px-12 py-10">
 
-            {activeTab === 'rsvp' && <AdminRSVP />}
-            {activeTab === 'wishes' && <AdminWishes />}
-            {activeTab === 'registry' && (
-                <>
-                {/* Stats Bar */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                    <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                        <p className="font-display text-3xl text-ivory">{items.length}</p>
-                        <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Total Items</p>
-                    </div>
-                    <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                        <p className="font-display text-3xl text-ivory">{items.filter(i => !i.bought).length}</p>
-                        <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Available</p>
-                    </div>
-                    <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                        <p className="font-display text-3xl text-ivory">{items.filter(i => i.bought).length}</p>
-                        <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Purchased</p>
-                    </div>
-                    <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                        <p className="font-display text-3xl text-ivory">{pageViews}</p>
-                        <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Page Views</p>
-                    </div>
-                </div>
-
-                {/* Add Button */}
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="font-display text-xl tracking-wide">Items</h2>
-                    <div className="flex items-center gap-4">
-                        <select
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value as SortOption)}
-                            className="bg-transparent border border-ivory/20 text-ivory text-xs tracking-widest uppercase font-sans py-3 px-3 focus:outline-none focus:border-ivory/50"
-                        >
-                            <option value="default" className="bg-wine-dark text-white">Sort: Default</option>
-                            <option value="name" className="bg-wine-dark text-white">Sort: Name</option>
-                            <option value="status" className="bg-wine-dark text-white">Sort: Status</option>
-                            <option value="buyer" className="bg-wine-dark text-white">Sort: Buyer</option>
-                        </select>
-                        <button
-                            onClick={() => { setShowAddForm(true); setAddForm(emptyForm); }}
-                            className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
-                        >
-                            <Plus size={14} /> <span className="hidden sm:inline">Add</span>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Add Form */}
-                {showAddForm && (
-                    <div className="bg-ivory/5 border border-ivory/10 p-8 mb-6">
-                        <h3 className="font-display text-lg mb-6 tracking-wide">New Registry Item</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <InputField label="Name (English)" value={addForm.name_en} onChange={(v) => setAddForm({ ...addForm, name_en: v })} placeholder="e.g. Coffee Machine" />
-                            <InputField label="Name (Indonesian) *" value={addForm.name_id} onChange={(v) => setAddForm({ ...addForm, name_id: v })} placeholder="e.g. Mesin Kopi" />
-                            <InputField label="Name (Korean)" value={addForm.name_ko} onChange={(v) => setAddForm({ ...addForm, name_ko: v })} placeholder="e.g. 커피 머신" />
-                            <InputField label="Link" value={addForm.link} onChange={(v) => setAddForm({ ...addForm, link: v })} placeholder="https://..." />
+                {activeTab === 'rsvp' && <AdminRSVP />}
+                {activeTab === 'wishes' && <AdminWishes />}
+                {activeTab === 'registry' && (
+                    <>
+                        {/* Stats Bar */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                            <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
+                                <p className="font-display text-3xl text-ivory">{items.length}</p>
+                                <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Total Items</p>
+                            </div>
+                            <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
+                                <p className="font-display text-3xl text-ivory">{items.filter(i => !i.bought).length}</p>
+                                <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Available</p>
+                            </div>
+                            <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
+                                <p className="font-display text-3xl text-ivory">{items.filter(i => i.bought).length}</p>
+                                <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Purchased</p>
+                            </div>
+                            <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
+                                <p className="font-display text-3xl text-ivory">{pageViews}</p>
+                                <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1">Page Views</p>
+                            </div>
                         </div>
-                        <div className="flex gap-3 justify-end">
-                            <button onClick={() => setShowAddForm(false)} className="px-5 py-3 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all flex items-center gap-2">
-                                <X size={14} /> Cancel
-                            </button>
-                            <button onClick={handleAdd} disabled={!addForm.name_id.trim() || submitting} className="px-5 py-3 bg-ivory text-wine text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2">
-                                <Save size={14} /> {submitting ? 'Saving...' : 'Save Item'}
-                            </button>
+
+                        {/* Add Button */}
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="font-display text-xl tracking-wide">Items</h2>
+                            <div className="flex items-center gap-4">
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value as SortOption)}
+                                    className="bg-transparent border border-ivory/20 text-ivory text-xs tracking-widest uppercase font-sans py-3 px-3 focus:outline-none focus:border-ivory/50"
+                                >
+                                    <option value="default" className="bg-wine-dark text-white">Sort: Default</option>
+                                    <option value="name" className="bg-wine-dark text-white">Sort: Name</option>
+                                    <option value="status" className="bg-wine-dark text-white">Sort: Status</option>
+                                    <option value="buyer" className="bg-wine-dark text-white">Sort: Buyer</option>
+                                </select>
+                                <button
+                                    onClick={() => { setShowAddForm(true); setAddForm(emptyForm); }}
+                                    className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
+                                >
+                                    <Plus size={14} /> <span className="hidden sm:inline">Add</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
 
-                {/* Loading */}
-                {loading && (
-                    <div className="flex justify-center py-16">
-                        <div className="w-8 h-8 border-2 border-ivory/20 border-t-ivory rounded-full animate-spin"></div>
-                    </div>
-                )}
-
-                {/* Items List */}
-                <div className="space-y-3">
-                    {sortedItems.map((item, index) => (
-                        <div key={item.id}>
-                            {editingId === item.id ? (
-                                /* ── Edit Mode ── */
-                                <div className="bg-ivory/5 border border-ivory/20 p-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                        <InputField label="Name (English)" value={editForm.name_en} onChange={(v) => setEditForm({ ...editForm, name_en: v })} />
-                                        <InputField label="Name (Indonesian)" value={editForm.name_id} onChange={(v) => setEditForm({ ...editForm, name_id: v })} />
-                                        <InputField label="Name (Korean)" value={editForm.name_ko} onChange={(v) => setEditForm({ ...editForm, name_ko: v })} />
-                                        <InputField label="Link" value={editForm.link} onChange={(v) => setEditForm({ ...editForm, link: v })} />
-                                    </div>
-                                    <div className="flex gap-3 justify-end">
-                                        <button onClick={() => setEditingId(null)} className="px-4 py-2 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 transition-all flex items-center gap-2">
-                                            <X size={14} /> Cancel
-                                        </button>
-                                        <button onClick={handleUpdate} disabled={submitting} className="px-4 py-2 bg-ivory text-wine text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors disabled:opacity-30 flex items-center gap-2">
-                                            <Save size={14} /> Save
-                                        </button>
-                                    </div>
+                        {/* Add Form */}
+                        {showAddForm && (
+                            <div className="bg-ivory/5 border border-ivory/10 p-8 mb-6">
+                                <h3 className="font-display text-lg mb-6 tracking-wide">New Registry Item</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <InputField label="Name (English)" value={addForm.name_en} onChange={(v) => setAddForm({ ...addForm, name_en: v })} placeholder="e.g. Coffee Machine" />
+                                    <InputField label="Name (Indonesian) *" value={addForm.name_id} onChange={(v) => setAddForm({ ...addForm, name_id: v })} placeholder="e.g. Mesin Kopi" />
+                                    <InputField label="Name (Korean)" value={addForm.name_ko} onChange={(v) => setAddForm({ ...addForm, name_ko: v })} placeholder="e.g. 커피 머신" />
+                                    <InputField label="Link" value={addForm.link} onChange={(v) => setAddForm({ ...addForm, link: v })} placeholder="https://..." />
                                 </div>
-                            ) : (
-                                /* ── View Mode ── */
-                                <div className={`group border transition-all duration-300 ${item.bought ? 'bg-ivory/[0.02] border-ivory/5' : 'bg-ivory/5 border-ivory/10 hover:bg-ivory/10'}`}>
-                                    {/* Delete Confirmation Overlay */}
-                                    {deletingId === item.id && (
-                                        <div className="bg-red-900/90 p-6 flex items-center justify-between">
-                                            <p className="font-sans text-sm">Delete <strong>"{item.name_id || item.name_en}"</strong>? This cannot be undone.</p>
-                                            <div className="flex gap-3">
-                                                <button onClick={() => setDeletingId(null)} className="px-4 py-2 border border-ivory/30 text-xs tracking-widest uppercase hover:bg-ivory/10 transition-colors">
-                                                    Cancel
+                                <div className="flex gap-3 justify-end">
+                                    <button onClick={() => setShowAddForm(false)} className="px-5 py-3 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all flex items-center gap-2">
+                                        <X size={14} /> Cancel
+                                    </button>
+                                    <button onClick={handleAdd} disabled={!addForm.name_id.trim() || submitting} className="px-5 py-3 bg-ivory text-wine text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2">
+                                        <Save size={14} /> {submitting ? 'Saving...' : 'Save Item'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Loading */}
+                        {loading && (
+                            <div className="flex justify-center py-16">
+                                <div className="w-8 h-8 border-2 border-ivory/20 border-t-ivory rounded-full animate-spin"></div>
+                            </div>
+                        )}
+
+                        {/* Items List */}
+                        <div className="space-y-3">
+                            {sortedItems.map((item, index) => (
+                                <div key={item.id}>
+                                    {editingId === item.id ? (
+                                        /* ── Edit Mode ── */
+                                        <div className="bg-ivory/5 border border-ivory/20 p-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                <InputField label="Name (English)" value={editForm.name_en} onChange={(v) => setEditForm({ ...editForm, name_en: v })} />
+                                                <InputField label="Name (Indonesian)" value={editForm.name_id} onChange={(v) => setEditForm({ ...editForm, name_id: v })} />
+                                                <InputField label="Name (Korean)" value={editForm.name_ko} onChange={(v) => setEditForm({ ...editForm, name_ko: v })} />
+                                                <InputField label="Link" value={editForm.link} onChange={(v) => setEditForm({ ...editForm, link: v })} />
+                                            </div>
+                                            <div className="flex gap-3 justify-end">
+                                                <button onClick={() => setEditingId(null)} className="px-4 py-2 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 transition-all flex items-center gap-2">
+                                                    <X size={14} /> Cancel
                                                 </button>
-                                                <button onClick={() => handleDelete(item.id)} disabled={submitting} className="px-4 py-2 bg-ivory text-red-900 text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors">
-                                                    Delete
+                                                <button onClick={handleUpdate} disabled={submitting} className="px-4 py-2 bg-ivory text-wine text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors disabled:opacity-30 flex items-center gap-2">
+                                                    <Save size={14} /> Save
                                                 </button>
                                             </div>
                                         </div>
-                                    )}
-
-                                    {deletingId !== item.id && (
-                                        <div className="p-6 flex items-center gap-6">
-                                            {/* Order Number */}
-                                            <div className={`w-10 h-10 min-w-[2.5rem] rounded-full flex items-center justify-center text-sm font-bold ${item.bought ? 'bg-ivory/10 text-ivory/30' : 'bg-ivory/10 text-ivory/70'}`}>
-                                                {index + 1}
-                                            </div>
-
-                                            {/* Info */}
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className={`font-serif text-lg mb-0.5 ${item.bought ? 'line-through text-ivory/30' : 'text-ivory'}`}>
-                                                    {item.name_id || item.name_en}
-                                                </h3>
-                                                <div className="flex flex-wrap gap-x-4 gap-y-1">
-                                                    {item.name_en && <span className="text-xs text-ivory/30 font-sans">EN: {item.name_en}</span>}
-                                                    {item.name_ko && <span className="text-xs text-ivory/30 font-sans">KO: {item.name_ko}</span>}
-                                                </div>
-                                                {item.link && (
-                                                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-ivory/30 hover:text-ivory/60 transition-colors mt-1">
-                                                        <ExternalLink size={10} /> {item.link.replace(/^https?:\/\//, '').slice(0, 40)}
-                                                    </a>
-                                                )}
-                                            </div>
-
-                                            {/* Bought Status */}
-                                            {item.bought && (
-                                                <div className="text-right flex flex-col items-end">
-                                                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-[10px] sm:text-xs tracking-wider uppercase font-sans whitespace-nowrap">
-                                                        <Check size={12} /> <span className="hidden sm:inline">Purchased</span>
-                                                    </span>
-                                                    {item.boughtBy && (
-                                                        <p className="text-[10px] sm:text-xs text-ivory/60 mt-1 font-sans font-medium">by {item.boughtBy}</p>
-                                                    )}
+                                    ) : (
+                                        /* ── View Mode ── */
+                                        <div className={`group border transition-all duration-300 ${item.bought ? 'bg-ivory/[0.02] border-ivory/5' : 'bg-ivory/5 border-ivory/10 hover:bg-ivory/10'}`}>
+                                            {/* Delete Confirmation Overlay */}
+                                            {deletingId === item.id && (
+                                                <div className="bg-red-900/90 p-6 flex items-center justify-between">
+                                                    <p className="font-sans text-sm">Delete <strong>"{item.name_id || item.name_en}"</strong>? This cannot be undone.</p>
+                                                    <div className="flex gap-3">
+                                                        <button onClick={() => setDeletingId(null)} className="px-4 py-2 border border-ivory/30 text-xs tracking-widest uppercase hover:bg-ivory/10 transition-colors">
+                                                            Cancel
+                                                        </button>
+                                                        <button onClick={() => handleDelete(item.id)} disabled={submitting} className="px-4 py-2 bg-ivory text-red-900 text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors">
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             )}
 
-                                            {/* Actions */}
-                                            <div className="flex items-center gap-2 ml-auto">
+                                    {deletingId !== item.id && (
+                                        <div className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                                            {/* Top info and Index */}
+                                            <div className="flex items-start sm:items-center gap-4 sm:gap-6 min-w-0">
+                                                {/* Order Number */}
+                                                <div className={`w-10 h-10 min-w-[2.5rem] rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${item.bought ? 'bg-ivory/10 text-ivory/30' : 'bg-ivory/10 text-ivory/70'}`}>
+                                                    {index + 1}
+                                                </div>
+
+                                                {/* Info */}
+                                                <div className="flex-1 min-w-0">
+                                                    <h3 className={`font-serif text-lg mb-0.5 ${item.bought ? 'line-through text-ivory/30' : 'text-ivory'} break-words`}>
+                                                        {item.name_id || item.name_en}
+                                                    </h3>
+                                                    <div className="flex flex-wrap gap-x-4 gap-y-1">
+                                                        {item.name_en && <span className="text-xs text-ivory/30 font-sans">EN: {item.name_en}</span>}
+                                                        {item.name_ko && <span className="text-xs text-ivory/30 font-sans">KO: {item.name_ko}</span>}
+                                                    </div>
+                                                    {item.link && (
+                                                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-ivory/30 hover:text-ivory/60 transition-colors mt-1 break-all">
+                                                            <ExternalLink size={10} className="shrink-0" /> {item.link.replace(/^https?:\/\//, '').slice(0, 40)}
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Bought Status & Actions wrapper */}
+                                            <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 mt-2 sm:mt-0 sm:ml-auto w-full sm:w-auto border-t sm:border-t-0 border-ivory/10 pt-4 sm:pt-0">
+                                                {/* Bought Status */}
                                                 {item.bought && (
-                                                    <button onClick={() => handleReset(item.id)} title="Reset bought status" className="p-2 text-ivory/30 hover:text-ivory hover:bg-ivory/10 transition-all rounded">
-                                                        <RotateCcw size={16} />
-                                                    </button>
+                                                    <div className="text-left flex flex-col sm:items-end w-full sm:w-auto">
+                                                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-[10px] sm:text-xs tracking-wider uppercase font-sans whitespace-nowrap w-max">
+                                                            <Check size={12} /> <span className="hidden sm:inline">Purchased</span>
+                                                        </span>
+                                                        {item.boughtBy && (
+                                                            <p className="text-[10px] sm:text-xs text-ivory/60 mt-1 font-sans font-medium">by {item.boughtBy}</p>
+                                                        )}
+                                                    </div>
                                                 )}
-                                                <button onClick={() => startEdit(item)} title="Edit" className="p-2 text-ivory/30 hover:text-ivory hover:bg-ivory/10 transition-all rounded">
-                                                    <Pencil size={16} />
-                                                </button>
-                                                <button onClick={() => setDeletingId(item.id)} title="Delete" className="p-2 text-ivory/30 hover:text-red-400 hover:bg-red-900/30 transition-all rounded">
-                                                    <Trash2 size={16} />
-                                                </button>
+
+                                                {/* Actions */}
+                                                <div className={`flex items-center gap-1 sm:gap-2 ${!item.bought ? 'ml-auto sm:ml-0' : ''}`}>
+                                                    {item.bought && (
+                                                        <button onClick={() => handleReset(item.id)} title="Reset bought status" className="p-2 sm:p-2.5 text-ivory/30 hover:text-ivory hover:bg-ivory/10 transition-all rounded">
+                                                            <RotateCcw size={16} />
+                                                        </button>
+                                                    )}
+                                                    <button onClick={() => startEdit(item)} title="Edit" className="p-2 sm:p-2.5 text-ivory/30 hover:text-ivory hover:bg-ivory/10 transition-all rounded">
+                                                        <Pencil size={16} />
+                                                    </button>
+                                                    <button onClick={() => setDeletingId(item.id)} title="Delete" className="p-2 sm:p-2.5 text-ivory/30 hover:text-red-400 hover:bg-red-900/30 transition-all rounded">
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     )}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            ))}
                         </div>
-                    ))}
-                </div>
 
-                {/* Empty State */}
-                {!loading && items.length === 0 && (
-                    <div className="text-center py-20 border border-dashed border-ivory/10">
-                        <Gift size={48} className="text-ivory/20 mx-auto mb-4" />
-                        <p className="font-serif text-xl text-ivory/40 mb-2">No items yet</p>
-                        <p className="font-sans text-sm text-ivory/30">Click "Add Item" to start building your registry.</p>
-                    </div>
+                        {/* Empty State */}
+                        {!loading && items.length === 0 && (
+                            <div className="text-center py-20 border border-dashed border-ivory/10">
+                                <Gift size={48} className="text-ivory/20 mx-auto mb-4" />
+                                <p className="font-serif text-xl text-ivory/40 mb-2">No items yet</p>
+                                <p className="font-sans text-sm text-ivory/30">Click "Add Item" to start building your registry.</p>
+                            </div>
+                        )}
+                    </>
                 )}
-                </>
-            )}
             </main>
         </div>
     );

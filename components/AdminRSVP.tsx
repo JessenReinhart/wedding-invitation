@@ -134,22 +134,22 @@ export const AdminRSVP: React.FC = () => {
     return (
         <div>
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 mb-10">
-                <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                    <p className="font-display text-3xl text-ivory">{entries.length}</p>
-                    <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-10">
+                <div className="bg-ivory/5 border border-ivory/10 p-4 sm:p-6 text-center">
+                    <p className="font-display text-2xl sm:text-3xl text-ivory">{entries.length}</p>
+                    <p className="text-[10px] sm:text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
                         <Users size={12} /> Total RSVPs
                     </p>
                 </div>
-                <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                    <p className="font-display text-3xl text-green-400">{attendingCount}</p>
-                    <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
+                <div className="bg-ivory/5 border border-ivory/10 p-4 sm:p-6 text-center">
+                    <p className="font-display text-2xl sm:text-3xl text-green-400">{attendingCount}</p>
+                    <p className="text-[10px] sm:text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
                         <CheckCircle size={12} /> Total Guests
                     </p>
                 </div>
-                <div className="bg-ivory/5 border border-ivory/10 p-6 text-center">
-                    <p className="font-display text-3xl text-red-400">{notAttendingCount}</p>
-                    <p className="text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
+                <div className="bg-ivory/5 border border-ivory/10 p-4 sm:p-6 text-center">
+                    <p className="font-display text-2xl sm:text-3xl text-red-400">{notAttendingCount}</p>
+                    <p className="text-[10px] sm:text-xs tracking-widest uppercase text-ivory/40 mt-1 flex items-center justify-center gap-1">
                         <XCircle size={12} /> Not Attending
                     </p>
                 </div>
@@ -183,96 +183,111 @@ export const AdminRSVP: React.FC = () => {
                 </div>
             )}
 
-            {/* Table */}
+            {/* Table / Cards */}
             {!loading && filtered.length > 0 && (
-                <div className="overflow-x-auto">
-                    <table className="w-full min-w-[700px]">
-                        <thead>
-                            <tr className="border-b border-ivory/10">
-                                <th className="text-left py-3 pr-4">
-                                    <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">#</span>
-                                </th>
-                                <ThButton field="firstName" className="py-3 pr-4">Name</ThButton>
-                                <ThButton field="email" className="py-3 pr-4">Email</ThButton>
-                                <ThButton field="attendance" className="py-3 pr-4">Status</ThButton>
-                                <ThButton field="pax" className="py-3 pr-4">Pax</ThButton>
-                                <th className="text-left py-3 pr-4">
-                                    <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Dietary</span>
-                                </th>
-                                <ThButton field="createdAt" className="py-3 pr-4">Submitted</ThButton>
-                                <th className="text-right py-3">
-                                    <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Actions</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filtered.map((entry, i) => (
-                                <tr
-                                    key={entry.id}
-                                    className="border-b border-ivory/5 hover:bg-ivory/5 transition-colors"
-                                >
-                                    <td className="py-4 pr-4 font-sans text-sm text-ivory/30">{i + 1}</td>
-                                    <td className="py-4 pr-4">
-                                        <p className="font-serif text-ivory">
-                                            {(entry.firstName || entry.lastName) 
-                                                ? `${entry.firstName || ''} ${entry.lastName || ''}`.trim()
-                                                : 'Anonymous'}
-                                        </p>
-                                    </td>
-                                    <td className="py-4 pr-4 font-sans text-sm text-ivory/60">{entry.email || '—'}</td>
-                                    <td className="py-4 pr-4">
-                                        {entry.attendance === 'yes' ? (
-                                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-xs tracking-wider uppercase font-sans">
-                                                <CheckCircle size={12} /> Attending
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-900/30 border border-red-500/20 text-red-400/80 text-xs tracking-wider uppercase font-sans">
-                                                <XCircle size={12} /> Not Attending
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="py-4 pr-4 font-sans text-sm text-ivory">
-                                        {entry.pax || 1}
-                                    </td>
-                                    <td className="py-4 pr-4 font-sans text-sm text-ivory/40 italic">
-                                        {entry.dietary || '—'}
-                                    </td>
-                                    <td className="py-4 pr-4 font-sans text-xs text-ivory/30">
-                                        {formatDate(entry.createdAt)}
-                                    </td>
-                                    <td className="py-4 text-right">
-                                        {deletingId === entry.id ? (
-                                            <div className="flex items-center justify-end gap-2">
-                                                <button
-                                                    onClick={() => setDeletingId(null)}
-                                                    className="p-2 text-ivory/40 hover:text-ivory transition-colors"
-                                                    title="Cancel"
-                                                >
-                                                    <RotateCcw size={16} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(entry.id)}
-                                                    disabled={submitting}
-                                                    className="p-2 text-red-400/60 hover:text-red-400 transition-colors disabled:opacity-30"
-                                                    title="Confirm Delete"
-                                                >
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <button
-                                                onClick={() => setDeletingId(entry.id)}
-                                                className="p-2 text-ivory/20 hover:text-red-400 transition-colors"
-                                                title="Delete RSVP"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        )}
-                                    </td>
+                <div className="relative">
+                    {/* Desktop View */}
+                    <div className="hidden md:block overflow-x-auto">
+                        <table className="w-full min-w-[700px]">
+                            <thead>
+                                <tr className="border-b border-ivory/10">
+                                    <th className="text-left py-3 pr-4">
+                                        <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">#</span>
+                                    </th>
+                                    <ThButton field="firstName" className="py-3 pr-4">Name</ThButton>
+                                    <ThButton field="email" className="py-3 pr-4">Email</ThButton>
+                                    <ThButton field="attendance" className="py-3 pr-4">Status</ThButton>
+                                    <ThButton field="pax" className="py-3 pr-4">Pax</ThButton>
+                                    <th className="text-left py-3 pr-4">
+                                        <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Dietary</span>
+                                    </th>
+                                    <ThButton field="createdAt" className="py-3 pr-4">Submitted</ThButton>
+                                    <th className="text-right py-3">
+                                        <span className="text-xs tracking-widest uppercase text-ivory/40 font-sans font-normal">Actions</span>
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filtered.map((entry, i) => (
+                                    <tr key={entry.id} className="border-b border-ivory/5 hover:bg-ivory/5 transition-colors">
+                                        <td className="py-4 pr-4 font-sans text-sm text-ivory/30">{i + 1}</td>
+                                        <td className="py-4 pr-4">
+                                            <p className="font-serif text-ivory">
+                                                {(entry.firstName || entry.lastName) 
+                                                    ? `${entry.firstName || ''} ${entry.lastName || ''}`.trim()
+                                                    : 'Anonymous'}
+                                            </p>
+                                        </td>
+                                        <td className="py-4 pr-4 font-sans text-sm text-ivory/60">{entry.email || '—'}</td>
+                                        <td className="py-4 pr-4">
+                                            {entry.attendance === 'yes' ? (
+                                                <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-xs tracking-wider uppercase font-sans">
+                                                    <CheckCircle size={12} /> Attending
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-900/30 border border-red-500/20 text-red-400/80 text-xs tracking-wider uppercase font-sans">
+                                                    <XCircle size={12} /> Not Attending
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="py-4 pr-4 font-sans text-sm text-ivory">{entry.pax || 1}</td>
+                                        <td className="py-4 pr-4 font-sans text-sm text-ivory/40 italic">{entry.dietary || '—'}</td>
+                                        <td className="py-4 pr-4 font-sans text-xs text-ivory/30">{formatDate(entry.createdAt)}</td>
+                                        <td className="py-4 text-right">
+                                            <ActionButtons entry={entry} deletingId={deletingId} setDeletingId={setDeletingId} handleDelete={handleDelete} submitting={submitting} />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile View */}
+                    <div className="md:hidden space-y-4">
+                        {filtered.map((entry, i) => (
+                            <div key={entry.id} className="bg-ivory/5 border border-ivory/10 p-5 relative overflow-hidden">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-ivory/10 flex items-center justify-center text-xs font-bold text-ivory/40">
+                                            {i + 1}
+                                        </div>
+                                        <div>
+                                            <p className="font-serif text-lg text-ivory">
+                                                {(entry.firstName || entry.lastName) 
+                                                    ? `${entry.firstName || ''} ${entry.lastName || ''}`.trim()
+                                                    : 'Anonymous'}
+                                            </p>
+                                            <p className="font-sans text-xs text-ivory/40">{entry.email || 'No email'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col items-end gap-1">
+                                        {entry.attendance === 'yes' ? (
+                                            <span className="px-2 py-0.5 bg-green-900/30 border border-green-500/20 text-green-400/80 text-[10px] tracking-widest uppercase font-sans">
+                                                Attending
+                                            </span>
+                                        ) : (
+                                            <span className="px-2 py-0.5 bg-red-900/30 border border-red-500/20 text-red-400/80 text-[10px] tracking-widest uppercase font-sans">
+                                                Not Attending
+                                            </span>
+                                        )}
+                                        <span className="text-[10px] text-ivory/30 tracking-widest uppercase font-sans">Pax: {entry.pax || 1}</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3 pt-3 border-t border-ivory/5">
+                                    {entry.dietary && (
+                                        <div>
+                                            <p className="text-[10px] tracking-widest uppercase text-ivory/20 mb-1">Dietary Requirements</p>
+                                            <p className="text-sm text-ivory/60 italic">{entry.dietary}</p>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between items-center bg-black/20 -mx-5 -mb-5 p-4 mt-4">
+                                        <p className="text-[10px] text-ivory/20 font-sans">{formatDate(entry.createdAt)}</p>
+                                        <ActionButtons entry={entry} deletingId={deletingId} setDeletingId={setDeletingId} handleDelete={handleDelete} submitting={submitting} />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
 
@@ -302,5 +317,44 @@ export const AdminRSVP: React.FC = () => {
                 </p>
             )}
         </div>
+    );
+};
+
+const ActionButtons: React.FC<{
+    entry: RSVPEntry;
+    deletingId: string | null;
+    setDeletingId: (id: string | null) => void;
+    handleDelete: (id: string) => void;
+    submitting: boolean;
+}> = ({ entry, deletingId, setDeletingId, handleDelete, submitting }) => {
+    if (deletingId === entry.id) {
+        return (
+            <div className="flex items-center justify-end gap-2">
+                <button
+                    onClick={() => setDeletingId(null)}
+                    className="p-2 text-ivory/40 hover:text-ivory transition-colors"
+                    title="Cancel"
+                >
+                    <RotateCcw size={16} />
+                </button>
+                <button
+                    onClick={() => handleDelete(entry.id)}
+                    disabled={submitting}
+                    className="p-2 text-red-500/60 hover:text-red-500 transition-colors disabled:opacity-30"
+                    title="Confirm Delete"
+                >
+                    <Trash2 size={16} />
+                </button>
+            </div>
+        );
+    }
+    return (
+        <button
+            onClick={() => setDeletingId(entry.id)}
+            className="p-2 text-ivory/20 hover:text-red-400 transition-colors"
+            title="Delete RSVP"
+        >
+            <Trash2 size={16} />
+        </button>
     );
 };
