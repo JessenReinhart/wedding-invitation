@@ -79,8 +79,10 @@ export const AdminRSVP: React.FC = () => {
         }
     };
 
+    const isAttending = (attendance: RSVPEntry['attendance']) => attendance === 'yes' || attendance == null;
+
     const attendingCount = entries
-        .filter((e) => e.attendance === 'yes')
+        .filter((e) => isAttending(e.attendance))
         .reduce((sum, e) => sum + (e.pax || 1), 0);
     const notAttendingCount = entries.filter((e) => e.attendance === 'no').length;
 
@@ -98,7 +100,7 @@ export const AdminRSVP: React.FC = () => {
             e.firstName,
             e.lastName,
             e.email,
-            e.attendance,
+            isAttending(e.attendance) ? 'yes' : 'no',
             e.pax || 1,
             e.dietary || '',
             formatDate(e.createdAt),
@@ -220,7 +222,7 @@ export const AdminRSVP: React.FC = () => {
                                         </td>
                                         <td className="py-4 pr-4 font-sans text-sm text-ivory/60">{entry.email || '—'}</td>
                                         <td className="py-4 pr-4">
-                                            {entry.attendance === 'yes' ? (
+                                            {isAttending(entry.attendance) ? (
                                                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-900/30 border border-green-500/20 text-green-400/80 text-xs tracking-wider uppercase font-sans">
                                                     <CheckCircle size={12} /> Attending
                                                 </span>
@@ -261,7 +263,7 @@ export const AdminRSVP: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-end gap-1">
-                                        {entry.attendance === 'yes' ? (
+                                        {isAttending(entry.attendance) ? (
                                             <span className="px-2 py-0.5 bg-green-900/30 border border-green-500/20 text-green-400/80 text-[10px] tracking-widest uppercase font-sans">
                                                 Attending
                                             </span>
