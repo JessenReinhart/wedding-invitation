@@ -3,10 +3,12 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Map from './Map';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 
 export const Venue: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
+  const { config } = useSiteConfig();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -46,7 +48,7 @@ export const Venue: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="mt-6 md:mt-0 text-right font-sans font-light text-sm md:text-base tracking-widest text-ivory/70"
           >
-            <p>AMANAIA MENTENG</p>
+            <p>{String(t('hero.venue')).toUpperCase()}</p>
             <p>{t('venue.city')}</p>
           </motion.div>
         </div>
@@ -93,7 +95,7 @@ export const Venue: React.FC = () => {
               </p>
             )}
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=-6.179173700072192,106.84046081165128"
+              href={config.links.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative px-8 py-4 bg-ivory text-wine font-sans uppercase tracking-widest text-sm font-bold overflow-hidden inline-block"
@@ -111,7 +113,7 @@ export const Venue: React.FC = () => {
           <div className="w-full h-px bg-ivory/20 mb-10"></div>
 
           <div className="w-full h-[400px] md:h-[500px] rounded-sm overflow-hidden border border-ivory/10 transition-all duration-700">
-            <Map position={[-6.179173700072192, 106.84046081165128]} className="h-full w-full" />
+            <Map position={[config.links.map.lat, config.links.map.lng]} className="h-full w-full" />
           </div>
         </div>
 

@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, RotateCcw, Save, X, ExternalLink, Gift, Check, Users } from 'lucide-react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Plus, Pencil, Trash2, RotateCcw, Save, X, ExternalLink, Gift, Check, Users, Settings } from 'lucide-react';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User } from 'firebase/auth';
+import { collection, documentId, getDocs, limit, orderBy, query, startAfter, updateDoc, type DocumentData } from 'firebase/firestore';
 import { AdminRSVP } from './AdminRSVP';
 import { AdminWishes } from './AdminWishes';
 import { Heart } from 'lucide-react';
@@ -13,6 +15,10 @@ import {
     type NewRegistryItem,
 } from '../services/registry';
 import { subscribeToRegistryVisits } from '../services/tracker';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
+import { normalizeSiteConfig, type SiteConfig, type SiteLanguage } from '@/services/siteConfig';
+import { auth } from '@/firebase';
+import { db } from '@/firebase';
 
 const emptyForm: Omit<NewRegistryItem, 'order'> = {
     name_id: '',
@@ -23,7 +29,7 @@ const emptyForm: Omit<NewRegistryItem, 'order'> = {
     boughtBy: '',
 };
 
-type Tab = 'registry' | 'rsvp' | 'wishes';
+type Tab = 'site' | 'registry' | 'rsvp' | 'wishes';
 type SortOption = 'default' | 'name' | 'status' | 'buyer';
 
 export const AdminApp: React.FC = () => {
@@ -38,6 +44,27 @@ export const AdminApp: React.FC = () => {
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [pageViews, setPageViews] = useState<number>(0);
     const [sortBy, setSortBy] = useState<SortOption>('default');
+    const [authOk, setAuthOk] = useState<boolean>(() => {
+        try {
+            return window.sessionStorage.getItem('admin_auth_ok_v1') === '1';
+        } catch {
+            return false;
+        }
+    });
+    const [authPw, setAuthPw] = useState('');
+    const [authError, setAuthError] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const [authEmail, setAuthEmail] = useState('');
+    const [authPassword, setAuthPassword] = useState('');
+    const [firebaseAuthError, setFirebaseAuthError] = useState<string | null>(null);
+    const [authBusy, setAuthBusy] = useState(false);
+
+    const requiredPassword = (import.meta as any).env?.VITE_ADMIN_PASSWORD as string | undefined;
+    const requiresAuth = Boolean(requiredPassword && requiredPassword.trim().length > 0);
+
+    useEffect(() => {
+        return onAuthStateChanged(auth, (u) => setUser(u));
+    }, []);
 
     const sortedItems = [...items].sort((a, b) => {
         switch (sortBy) {
@@ -54,6 +81,9 @@ export const AdminApp: React.FC = () => {
     });
 
     useEffect(() => {
+        if (activeTab !== 'registry') return;
+        setLoading(true);
+
         const unsubscribeItems = subscribeToRegistryItems((data) => {
             setItems(data);
             setLoading(false);
@@ -67,7 +97,55 @@ export const AdminApp: React.FC = () => {
             unsubscribeItems();
             unsubscribeVisits();
         };
-    }, []);
+    }, [activeTab]);
+
+    const handleLogin = () => {
+        if (!requiresAuth) return;
+        if (authPw === requiredPassword) {
+            setAuthOk(true);
+            setAuthError(null);
+            try {
+                window.sessionStorage.setItem('admin_auth_ok_v1', '1');
+            } catch {
+                undefined;
+            }
+            return;
+        }
+        setAuthError('Invalid password');
+    };
+
+    const handleFirebaseLogin = async () => {
+        setAuthBusy(true);
+        setFirebaseAuthError(null);
+        try {
+            await signInWithEmailAndPassword(auth, authEmail.trim(), authPassword);
+        } catch (err) {
+            console.error('Firebase auth login failed:', err);
+            const message =
+                (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string')
+                    ? (err as any).message
+                    : 'Unknown error';
+            const code =
+                (err && typeof err === 'object' && 'code' in err && typeof (err as any).code === 'string')
+                    ? (err as any).code
+                    : null;
+            setFirebaseAuthError(code ? `${code}: ${message}` : message);
+        } finally {
+            setAuthBusy(false);
+        }
+    };
+
+    const handleFirebaseLogout = async () => {
+        setAuthBusy(true);
+        setFirebaseAuthError(null);
+        try {
+            await signOut(auth);
+        } catch (err) {
+            console.error('Firebase auth logout failed:', err);
+        } finally {
+            setAuthBusy(false);
+        }
+    };
 
     // ─── ADD ────────────────────────────────────────────
     const handleAdd = async () => {
@@ -133,6 +211,82 @@ export const AdminApp: React.FC = () => {
         }
     };
 
+    if (requiresAuth && !authOk) {
+        return (
+            <div className="min-h-screen bg-wine-dark text-ivory font-sans flex items-center justify-center px-6">
+                <div className="w-full max-w-md bg-ivory/5 border border-ivory/10 p-8">
+                    <h1 className="font-display text-2xl tracking-wide mb-2">Admin Login</h1>
+                    <p className="text-sm text-ivory/50 mb-6">Enter the admin password to continue.</p>
+                    <label className="block text-xs tracking-widest uppercase text-ivory/40 mb-2 font-sans">Password</label>
+                    <input
+                        type="password"
+                        value={authPw}
+                        onChange={(e) => setAuthPw(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleLogin();
+                        }}
+                        className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors"
+                    />
+                    {authError && <div className="mt-3 text-xs tracking-widest uppercase text-red-300">{authError}</div>}
+                    <div className="mt-6 flex justify-end">
+                        <button
+                            onClick={handleLogin}
+                            className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
+                        >
+                            <Save size={14} /> Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="min-h-screen bg-wine-dark text-ivory font-sans flex items-center justify-center px-6">
+                <div className="w-full max-w-md bg-ivory/5 border border-ivory/10 p-8">
+                    <h1 className="font-display text-2xl tracking-wide mb-2">Admin Login</h1>
+                    <p className="text-sm text-ivory/50 mb-6">Sign in with Firebase to manage and save data.</p>
+
+                    <label className="block text-xs tracking-widest uppercase text-ivory/40 mb-2 font-sans">Email</label>
+                    <input
+                        type="email"
+                        value={authEmail}
+                        onChange={(e) => setAuthEmail(e.target.value)}
+                        className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors"
+                    />
+
+                    <label className="block text-xs tracking-widest uppercase text-ivory/40 mb-2 font-sans mt-4">Password</label>
+                    <input
+                        type="password"
+                        value={authPassword}
+                        onChange={(e) => setAuthPassword(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleFirebaseLogin();
+                        }}
+                        className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors"
+                    />
+
+                    {firebaseAuthError && (
+                        <div className="mt-3 text-xs tracking-widest uppercase text-red-300">
+                            {firebaseAuthError}
+                        </div>
+                    )}
+
+                    <div className="mt-6 flex justify-end">
+                        <button
+                            onClick={handleFirebaseLogin}
+                            disabled={authBusy || !authEmail.trim() || !authPassword}
+                            className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                            <Save size={14} /> {authBusy ? 'Signing in...' : 'Sign In'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-wine-dark text-ivory font-sans">
             {/* Header */}
@@ -141,6 +295,7 @@ export const AdminApp: React.FC = () => {
                     <div>
                         <h1 className="font-display text-2xl md:text-3xl tracking-wide">Admin Dashboard</h1>
                         <p className="font-sans text-ivory/40 text-sm mt-1">
+                            {activeTab === 'site' && 'Edit branding, names, locations, and site copy'}
                             {activeTab === 'registry' && 'Manage your wedding registry items'}
                             {activeTab === 'rsvp' && 'View guest RSVP responses'}
                             {activeTab === 'wishes' && 'Manage guest wishes and messages'}
@@ -153,8 +308,29 @@ export const AdminApp: React.FC = () => {
                         ← Back to Site
                     </a>
                 </div>
+                <div className="max-w-5xl mx-auto mt-4 flex items-center justify-between">
+                    <div className="text-xs tracking-widest uppercase text-ivory/40 font-sans">
+                        Signed in as {user.email ?? user.uid}
+                    </div>
+                    <button
+                        onClick={handleFirebaseLogout}
+                        disabled={authBusy}
+                        className="px-4 py-2 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                        Sign Out
+                    </button>
+                </div>
                 {/* Tabs */}
                 <div className="max-w-5xl mx-auto flex gap-1 mt-6">
+                    <button
+                        onClick={() => setActiveTab('site')}
+                        className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${activeTab === 'site'
+                                ? 'bg-ivory/10 text-ivory border border-ivory/20 font-bold'
+                                : 'text-ivory/40 border border-transparent hover:text-ivory/70'
+                            }`}
+                    >
+                        <Settings size={14} /> Site
+                    </button>
                     <button
                         onClick={() => setActiveTab('registry')}
                         className={`flex items-center gap-2 px-5 py-3 text-xs tracking-widest uppercase font-sans transition-all ${activeTab === 'registry'
@@ -187,6 +363,7 @@ export const AdminApp: React.FC = () => {
 
             <main className="max-w-5xl mx-auto px-6 md:px-12 py-10">
 
+                {activeTab === 'site' && <AdminSiteSettings />}
                 {activeTab === 'rsvp' && <AdminRSVP />}
                 {activeTab === 'wishes' && <AdminWishes />}
                 {activeTab === 'registry' && (
@@ -398,3 +575,435 @@ const InputField: React.FC<{
         />
     </div>
 );
+
+const LANGS: SiteLanguage[] = ['id', 'en', 'ko'];
+
+const AdminSiteSettings: React.FC = () => {
+    const { config, isLoaded, save } = useSiteConfig();
+    const [draft, setDraft] = useState<SiteConfig>(() => normalizeSiteConfig(config));
+    const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+    const [saveError, setSaveError] = useState<string | null>(null);
+    const [migrating, setMigrating] = useState(false);
+    const [migrateError, setMigrateError] = useState<string | null>(null);
+    const [migrateDone, setMigrateDone] = useState<string | null>(null);
+    const [jsonValue, setJsonValue] = useState('');
+    const [jsonError, setJsonError] = useState<string | null>(null);
+    const [newOverrideKey, setNewOverrideKey] = useState('');
+
+    useEffect(() => {
+        setDraft(normalizeSiteConfig(config));
+    }, [config]);
+
+    const isDirty = useMemo(() => JSON.stringify(draft) !== JSON.stringify(config), [draft, config]);
+
+    const updateDraft = (updater: (prev: SiteConfig) => SiteConfig) => {
+        setDraft((prev) => updater(prev));
+        setStatus('idle');
+        setSaveError(null);
+    };
+
+    const setOverride = (key: string, lang: SiteLanguage, value: string) => {
+        updateDraft((prev) => ({
+            ...prev,
+            copyOverrides: {
+                ...prev.copyOverrides,
+                [lang]: {
+                    ...prev.copyOverrides[lang],
+                    [key]: value,
+                },
+            },
+        }));
+    };
+
+    const removeOverrideKey = (key: string) => {
+        updateDraft((prev) => {
+            const next: SiteConfig = {
+                ...prev,
+                copyOverrides: {
+                    id: { ...prev.copyOverrides.id },
+                    en: { ...prev.copyOverrides.en },
+                    ko: { ...prev.copyOverrides.ko },
+                },
+            };
+            LANGS.forEach((lang) => {
+                delete next.copyOverrides[lang][key];
+            });
+            return next;
+        });
+    };
+
+    const allOverrideKeys = useMemo(() => {
+        const keys = new Set<string>();
+        LANGS.forEach((lang) => Object.keys(draft.copyOverrides?.[lang] ?? {}).forEach((k) => keys.add(k)));
+        return Array.from(keys).sort();
+    }, [draft]);
+
+    const quickKeys = useMemo(() => ([
+        { key: 'hero.location', label: 'Hero Location' },
+        { key: 'hero.venue', label: 'Hero Venue Name' },
+        { key: 'hero.invitationMessage', label: 'Hero Invitation Message' },
+        { key: 'hero.hashtag', label: 'Hashtag' },
+        { key: 'venue.city', label: 'Venue City Line' },
+        { key: 'venue.quote', label: 'Venue Quote' },
+        { key: 'venue.description', label: 'Venue Description' },
+        { key: 'venue.address', label: 'Venue Address' },
+        { key: 'venue.locationDetail', label: 'Venue Location Detail' },
+        { key: 'event.date', label: 'Event Date' },
+        { key: 'gift.bankName', label: 'Gift Bank Name' },
+        { key: 'gift.accountName', label: 'Gift Account Name' },
+        { key: 'gift.accountNumber', label: 'Gift Account Number' },
+    ]), []);
+
+    const handleSave = async () => {
+        setStatus('saving');
+        setSaveError(null);
+        try {
+            await save(draft);
+            setStatus('saved');
+        } catch (err) {
+            console.error('Failed to save site config:', err);
+            const message =
+                (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string')
+                    ? (err as any).message
+                    : 'Unknown error';
+            const code =
+                (err && typeof err === 'object' && 'code' in err && typeof (err as any).code === 'string')
+                    ? (err as any).code
+                    : null;
+            setSaveError(code ? `${code}: ${message}` : message);
+            setStatus('error');
+        }
+    };
+
+    const handleExport = () => {
+        setJsonError(null);
+        setJsonValue(JSON.stringify(draft, null, 2));
+    };
+
+    const handleImport = () => {
+        setJsonError(null);
+        try {
+            const parsed = JSON.parse(jsonValue);
+            setDraft(normalizeSiteConfig(parsed));
+        } catch {
+            setJsonError('Invalid JSON');
+        }
+    };
+
+    const addOverrideKey = () => {
+        const k = newOverrideKey.trim();
+        if (!k) return;
+        updateDraft((prev) => {
+            const next = normalizeSiteConfig(prev);
+            LANGS.forEach((lang) => {
+                if (next.copyOverrides[lang][k] === undefined) next.copyOverrides[lang][k] = '';
+            });
+            return next;
+        });
+        setNewOverrideKey('');
+    };
+
+    const backfillTenantId = async (collectionName: string) => {
+        const pageSize = 500;
+        let cursor: DocumentData | null = null;
+        let updated = 0;
+
+        while (true) {
+            const q = cursor
+                ? query(collection(db, collectionName), orderBy(documentId()), startAfter(cursor), limit(pageSize))
+                : query(collection(db, collectionName), orderBy(documentId()), limit(pageSize));
+
+            const snap = await getDocs(q);
+            if (snap.empty) break;
+
+            const updates = snap.docs
+                .filter((d) => (d.data() as any)?.tenantId === undefined)
+                .map(async (d) => {
+                    await updateDoc(d.ref, { tenantId: 'vj' });
+                    updated += 1;
+                });
+
+            await Promise.all(updates);
+            cursor = snap.docs[snap.docs.length - 1] as any;
+            if (snap.size < pageSize) break;
+        }
+
+        return updated;
+    };
+
+    const handleBackfill = async () => {
+        setMigrating(true);
+        setMigrateError(null);
+        setMigrateDone(null);
+        try {
+            const [c, r, g] = await Promise.all([
+                backfillTenantId('comments'),
+                backfillTenantId('rsvps'),
+                backfillTenantId('registryItems'),
+            ]);
+            setMigrateDone(`Updated: comments ${c}, rsvps ${r}, registryItems ${g}`);
+        } catch (err) {
+            console.error('Legacy backfill failed:', err);
+            const message =
+                (err && typeof err === 'object' && 'message' in err && typeof (err as any).message === 'string')
+                    ? (err as any).message
+                    : 'Unknown error';
+            const code =
+                (err && typeof err === 'object' && 'code' in err && typeof (err as any).code === 'string')
+                    ? (err as any).code
+                    : null;
+            setMigrateError(code ? `${code}: ${message}` : message);
+        } finally {
+            setMigrating(false);
+        }
+    };
+
+    if (!isLoaded) {
+        return (
+            <div className="flex justify-center py-16">
+                <div className="w-8 h-8 border-2 border-ivory/20 border-t-ivory rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-10">
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <div className="flex items-start justify-between gap-6 flex-wrap">
+                    <div>
+                        <h2 className="font-display text-xl tracking-wide">Branding</h2>
+                        <p className="text-sm text-ivory/40 mt-1">Updates the browser title and description.</p>
+                    </div>
+                    <button
+                        onClick={handleSave}
+                        disabled={!isDirty || status === 'saving'}
+                        className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                        <Save size={14} /> {status === 'saving' ? 'Saving...' : 'Save Changes'}
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <InputField label="Project Name" value={draft.brand.projectName} onChange={(v) => updateDraft((p) => ({ ...p, brand: { ...p.brand, projectName: v } }))} />
+                    <InputField label="Meta Title" value={draft.brand.metaTitle} onChange={(v) => updateDraft((p) => ({ ...p, brand: { ...p.brand, metaTitle: v } }))} />
+                </div>
+                <div className="mt-4">
+                    <label className="block text-xs tracking-widest uppercase text-ivory/40 mb-2 font-sans">Meta Description</label>
+                    <textarea
+                        value={draft.brand.metaDescription}
+                        onChange={(e) => updateDraft((p) => ({ ...p, brand: { ...p.brand, metaDescription: e.target.value } }))}
+                        className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors min-h-[96px]"
+                    />
+                </div>
+                {status === 'saved' && <div className="mt-4 text-xs tracking-widest uppercase text-green-300">Saved</div>}
+                {status === 'error' && (
+                    <div className="mt-4 text-xs tracking-widest uppercase text-red-300">
+                        Save failed{saveError ? ` — ${saveError}` : ''}
+                    </div>
+                )}
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <div className="flex items-start justify-between gap-6 flex-wrap">
+                    <div>
+                        <h2 className="font-display text-xl tracking-wide">Legacy Data</h2>
+                        <p className="text-sm text-ivory/40 mt-1">Backfills tenantId="vj" for older docs that predate multi-tenant support.</p>
+                    </div>
+                    <button
+                        onClick={handleBackfill}
+                        disabled={migrating}
+                        className="flex items-center gap-2 px-5 py-3 border border-ivory/20 text-ivory/70 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                        <RotateCcw size={14} /> {migrating ? 'Running...' : 'Backfill tenantId'}
+                    </button>
+                </div>
+                {migrateDone && <div className="mt-4 text-xs tracking-widest uppercase text-green-300">{migrateDone}</div>}
+                {migrateError && <div className="mt-4 text-xs tracking-widest uppercase text-red-300">{migrateError}</div>}
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <h2 className="font-display text-xl tracking-wide">Couple</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <h3 className="font-display text-lg tracking-wide mb-4">Bride</h3>
+                        <div className="space-y-4">
+                            <InputField label="Display Name" value={draft.couple.bride.displayName} onChange={(v) => updateDraft((p) => ({ ...p, couple: { ...p.couple, bride: { ...p.couple.bride, displayName: v } } }))} />
+                            <InputField label="Full Name (Default)" value={draft.couple.bride.fullName.default} onChange={(v) => updateDraft((p) => ({ ...p, couple: { ...p.couple, bride: { ...p.couple.bride, fullName: { ...p.couple.bride.fullName, default: v } } } }))} />
+                            <InputField label="Full Name (Alt)" value={draft.couple.bride.fullName.alt ?? ''} onChange={(v) => updateDraft((p) => ({ ...p, couple: { ...p.couple, bride: { ...p.couple.bride, fullName: { ...p.couple.bride.fullName, alt: v } } } }))} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 className="font-display text-lg tracking-wide mb-4">Groom</h3>
+                        <div className="space-y-4">
+                            <InputField label="Display Name" value={draft.couple.groom.displayName} onChange={(v) => updateDraft((p) => ({ ...p, couple: { ...p.couple, groom: { ...p.couple.groom, displayName: v } } }))} />
+                            <InputField label="Full Name (Default)" value={draft.couple.groom.fullName.default} onChange={(v) => updateDraft((p) => ({ ...p, couple: { ...p.couple, groom: { ...p.couple.groom, fullName: { ...p.couple.groom.fullName, default: v } } } }))} />
+                            <InputField label="Full Name (Alt)" value={draft.couple.groom.fullName.alt ?? ''} onChange={(v) => updateDraft((p) => ({ ...p, couple: { ...p.couple, groom: { ...p.couple.groom, fullName: { ...p.couple.groom.fullName, alt: v } } } }))} />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <h2 className="font-display text-xl tracking-wide">Wedding Date</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                    <InputField label="Date ISO (YYYY-MM-DD)" value={draft.wedding.dateISO} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateISO: v } }))} />
+                    <InputField label="Short Label (ID)" value={draft.wedding.dateLabelShort.id} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateLabelShort: { ...p.wedding.dateLabelShort, id: v } } }))} />
+                    <InputField label="Short Label (EN)" value={draft.wedding.dateLabelShort.en} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateLabelShort: { ...p.wedding.dateLabelShort, en: v } } }))} />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <InputField label="Short Label (KO)" value={draft.wedding.dateLabelShort.ko} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateLabelShort: { ...p.wedding.dateLabelShort, ko: v } } }))} />
+                    <InputField label="Full Label (ID)" value={draft.wedding.dateLabel.id} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateLabel: { ...p.wedding.dateLabel, id: v } } }))} />
+                    <InputField label="Full Label (EN)" value={draft.wedding.dateLabel.en} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateLabel: { ...p.wedding.dateLabel, en: v } } }))} />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <InputField label="Full Label (KO)" value={draft.wedding.dateLabel.ko} onChange={(v) => updateDraft((p) => ({ ...p, wedding: { ...p.wedding, dateLabel: { ...p.wedding.dateLabel, ko: v } } }))} />
+                    <div />
+                    <div />
+                </div>
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <h2 className="font-display text-xl tracking-wide">Location</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <InputField label="Google Maps URL" value={draft.links.googleMapsUrl} onChange={(v) => updateDraft((p) => ({ ...p, links: { ...p.links, googleMapsUrl: v } }))} />
+                    <div className="grid grid-cols-2 gap-4">
+                        <InputField
+                            label="Map Lat"
+                            value={String(draft.links.map.lat)}
+                            onChange={(v) => updateDraft((p) => {
+                                const n = Number(v);
+                                return { ...p, links: { ...p.links, map: { ...p.links.map, lat: Number.isFinite(n) ? n : p.links.map.lat } } };
+                            })}
+                        />
+                        <InputField
+                            label="Map Lng"
+                            value={String(draft.links.map.lng)}
+                            onChange={(v) => updateDraft((p) => {
+                                const n = Number(v);
+                                return { ...p, links: { ...p.links, map: { ...p.links.map, lng: Number.isFinite(n) ? n : p.links.map.lng } } };
+                            })}
+                        />
+                    </div>
+                </div>
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <h2 className="font-display text-xl tracking-wide">Copy (Quick Fields)</h2>
+                <p className="text-sm text-ivory/40 mt-1">Overrides the built-in translations. Leave blank to override with an empty string.</p>
+
+                <div className="mt-6 space-y-8">
+                    {quickKeys.map(({ key, label }) => (
+                        <div key={key} className="border border-ivory/10 p-6">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="text-xs tracking-widest uppercase text-ivory/60">{label}</div>
+                                <button
+                                    onClick={() => removeOverrideKey(key)}
+                                    className="px-4 py-2 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all"
+                                >
+                                    Remove Override
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                {LANGS.map((lang) => (
+                                    <div key={lang}>
+                                        <label className="block text-xs tracking-widest uppercase text-ivory/40 mb-2 font-sans">{lang.toUpperCase()}</label>
+                                        <textarea
+                                            value={draft.copyOverrides[lang][key] ?? ''}
+                                            onChange={(e) => setOverride(key, lang, e.target.value)}
+                                            className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors min-h-[96px]"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <div className="flex items-start justify-between gap-6 flex-wrap">
+                    <div>
+                        <h2 className="font-display text-xl tracking-wide">Copy (Advanced Overrides)</h2>
+                        <p className="text-sm text-ivory/40 mt-1">Add any translation key path you want to override.</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <input
+                            type="text"
+                            value={newOverrideKey}
+                            onChange={(e) => setNewOverrideKey(e.target.value)}
+                            placeholder="e.g. rsvp.successDesc"
+                            className="px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors w-64"
+                        />
+                        <button
+                            onClick={addOverrideKey}
+                            className="flex items-center gap-2 px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
+                        >
+                            <Plus size={14} /> Add
+                        </button>
+                    </div>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                    {allOverrideKeys.map((k) => (
+                        <div key={k} className="border border-ivory/10 p-6">
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="text-xs tracking-widest uppercase text-ivory/60">{k}</div>
+                                <button
+                                    onClick={() => removeOverrideKey(k)}
+                                    className="px-4 py-2 border border-ivory/20 text-ivory/60 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                {LANGS.map((lang) => (
+                                    <div key={lang}>
+                                        <label className="block text-xs tracking-widest uppercase text-ivory/40 mb-2 font-sans">{lang.toUpperCase()}</label>
+                                        <textarea
+                                            value={draft.copyOverrides[lang][k] ?? ''}
+                                            onChange={(e) => setOverride(k, lang, e.target.value)}
+                                            className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-sans text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors min-h-[96px]"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                    {allOverrideKeys.length === 0 && (
+                        <div className="text-center py-12 border border-dashed border-ivory/10 text-ivory/40">
+                            No overrides yet.
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            <section className="bg-ivory/5 border border-ivory/10 p-8">
+                <h2 className="font-display text-xl tracking-wide">Import / Export</h2>
+                <div className="mt-6 flex flex-wrap gap-3">
+                    <button
+                        onClick={handleExport}
+                        className="px-5 py-3 border border-ivory/20 text-ivory/70 text-xs tracking-widest uppercase hover:border-ivory/40 hover:text-ivory transition-all"
+                    >
+                        Export JSON
+                    </button>
+                    <button
+                        onClick={handleImport}
+                        className="px-5 py-3 bg-ivory text-wine font-sans text-xs tracking-widest uppercase font-bold hover:bg-ivory/90 transition-colors"
+                    >
+                        Import JSON
+                    </button>
+                </div>
+                {jsonError && <div className="mt-4 text-xs tracking-widest uppercase text-red-300">{jsonError}</div>}
+                <div className="mt-4">
+                    <textarea
+                        value={jsonValue}
+                        onChange={(e) => setJsonValue(e.target.value)}
+                        placeholder="{ ... }"
+                        className="w-full px-4 py-3 border border-ivory/20 bg-transparent font-mono text-xs text-ivory placeholder:text-ivory/20 focus:outline-none focus:border-ivory/50 transition-colors min-h-[320px]"
+                    />
+                </div>
+            </section>
+        </div>
+    );
+};

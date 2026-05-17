@@ -3,21 +3,22 @@ import {
     addDoc,
     onSnapshot,
     query,
-    orderBy,
-    limit,
     serverTimestamp,
     type Unsubscribe,
     type Timestamp,
     deleteDoc,
-    doc
+    doc,
+    where
 } from 'firebase/firestore';
 import { db } from '../firebase';
+import { getTenantId, isDefaultTenant } from './tenant';
 
 export interface CommentEntry {
     id: string;
     name: string;
     message: string;
     createdAt: Timestamp;
+    tenantId?: string;
 }
 
 export interface CommentInput {
@@ -31,8 +32,10 @@ const COLLECTION = 'comments';
  * Submit a new wish/comment to Firestore.
  */
 export async function submitComment(data: CommentInput): Promise<string> {
+    const tenantId = getTenantId();
     const docRef = await addDoc(collection(db, COLLECTION), {
         ...data,
+        tenantId,
         createdAt: serverTimestamp(),
     });
     return docRef.id;
@@ -45,19 +48,57 @@ export function subscribeToComments(
     callback: (comments: CommentEntry[]) => void,
     maxCount: number = 50
 ): Unsubscribe {
-    const q = query(
+    const tenantId = getTenantId();
+    const qTenant = query(
         collection(db, COLLECTION),
-        orderBy('createdAt', 'desc'),
-        limit(maxCount)
+        where('tenantId', '==', tenantId)
     );
 
-    return onSnapshot(q, (snapshot) => {
-        const comments: CommentEntry[] = snapshot.docs.map((doc) => ({
+    const state: { tenant?: CommentEntry[]; legacy?: CommentEntry[] } = {};
+
+    const emit = () => {
+        const merged = [...(state.tenant ?? []), ...(state.legacy ?? [])];
+        const byId = new Map<string, CommentEntry>();
+        merged.forEach((c) => byId.set(c.id, c));
+        const next = Array.from(byId.values()).sort((a, b) => {
+            const aSec = (a.createdAt as any)?.seconds ?? 0;
+            const bSec = (b.createdAt as any)?.seconds ?? 0;
+            return bSec - aSec;
+        });
+        callback(next.slice(0, maxCount));
+    };
+
+    const unsubTenant = onSnapshot(qTenant, (snapshot) => {
+        state.tenant = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
         })) as CommentEntry[];
-        callback(comments);
+        emit();
     });
+
+    if (!isDefaultTenant(tenantId)) {
+        return () => {
+            unsubTenant();
+        };
+    }
+
+    const qLegacy = query(
+        collection(db, COLLECTION),
+        where('tenantId', '==', null)
+    );
+
+    const unsubLegacy = onSnapshot(qLegacy, (snapshot) => {
+        state.legacy = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        })) as CommentEntry[];
+        emit();
+    });
+
+    return () => {
+        unsubTenant();
+        unsubLegacy();
+    };
 }
 
 /**

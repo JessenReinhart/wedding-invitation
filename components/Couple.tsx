@@ -1,10 +1,19 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
+import { getMonogram } from '@/services/siteConfig';
 
 export const Couple: React.FC = () => {
     const { t, isBatak } = useLanguage();
     const containerRef = useRef<HTMLDivElement>(null);
+    const { config } = useSiteConfig();
+    const monogram = getMonogram(config);
+
+    const brideName = config.couple.bride.displayName;
+    const groomName = config.couple.groom.displayName;
+    const brideFullName = isBatak ? (config.couple.bride.fullName.alt ?? config.couple.bride.fullName.default) : config.couple.bride.fullName.default;
+    const groomFullName = isBatak ? (config.couple.groom.fullName.alt ?? config.couple.groom.fullName.default) : config.couple.groom.fullName.default;
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -34,7 +43,7 @@ export const Couple: React.FC = () => {
                         <source media="(min-width: 1024px)" srcSet="/images/couple-landscape.jpg" />
                         <img
                             src="/images/couple.jpg"
-                            alt="Vita and Jessen"
+                            alt={`${brideName} and ${groomName}`}
                             className="w-full h-full object-cover object-[center_35%] lg:object-center"
                         />
                     </picture>
@@ -51,7 +60,7 @@ export const Couple: React.FC = () => {
                     style={{ opacity: watermarkOpacity }}
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none"
                 >
-                    <h3 className="font-display text-[40vw] leading-none text-wine">V&J</h3>
+                    <h3 className="font-display text-[40vw] leading-none text-wine">{monogram}</h3>
                 </motion.div>
 
                 {/* Text Overlay */}
@@ -63,10 +72,10 @@ export const Couple: React.FC = () => {
                     <div className="flex flex-col items-center md:items-end text-center md:text-right">
                         <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine-light mb-6">{t('couple.brideTitle')}</span>
                         <h2 className="font-display text-5xl md:text-7xl text-wine mb-2 leading-none drop-shadow-sm">
-                            VITA
+                            {brideName.toUpperCase()}
                         </h2>
                         <p className="font-sans text-xs tracking-[0.2em] uppercase text-wine-dark mb-4">
-                            {isBatak ? 'Alvita Fabiola Aprilia br. Sitorus' : 'Alvita Fabiola Aprilia'}
+                            {brideFullName}
                         </p>
                         <div className="w-12 h-px bg-wine/30 my-6"></div>
                         <div className="font-serif italic text-base md:text-lg text-wine-dark/80 space-y-1">
@@ -83,10 +92,10 @@ export const Couple: React.FC = () => {
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
                         <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine-light mb-6">{t('couple.groomTitle')}</span>
                         <h2 className="font-display text-5xl md:text-7xl text-wine mb-2 leading-none drop-shadow-sm">
-                            JESSEN
+                            {groomName.toUpperCase()}
                         </h2>
                         <p className="font-sans text-xs tracking-[0.2em] uppercase text-wine-dark mb-4">
-                            Muhammad Jessen Reinhart Sugiarto
+                            {groomFullName}
                         </p>
                         <div className="w-12 h-px bg-wine/30 my-6"></div>
                         <div className="font-serif italic text-base md:text-lg text-wine-dark/80 space-y-1">

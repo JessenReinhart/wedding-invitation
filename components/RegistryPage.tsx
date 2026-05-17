@@ -4,9 +4,14 @@ import { ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Registry } from './Registry';
 import { logRegistryVisit } from '../services/tracker';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
+import { getMonogram } from '@/services/siteConfig';
 
 export const RegistryPage: React.FC = () => {
     const { language, setLanguage, t } = useLanguage();
+    const { config } = useSiteConfig();
+    const monogram = getMonogram(config);
+    const dateShort = config.wedding.dateLabelShort[language];
 
     useEffect(() => {
         logRegistryVisit();
@@ -27,7 +32,7 @@ export const RegistryPage: React.FC = () => {
                 </a>
 
                 <div className="text-2xl font-display font-bold text-wine tracking-tighter">
-                    V&J
+                    {monogram}
                 </div>
 
                 <div className="flex gap-2 text-xs font-sans tracking-wider items-center">
@@ -65,7 +70,7 @@ export const RegistryPage: React.FC = () => {
                 className="py-12 text-center border-t border-wine/10"
             >
                 <p className="font-display text-lg text-wine/40 tracking-widest">
-                    V & J — 02.05.26
+                    {monogram.replace('&', ' & ')} — {dateShort}
                 </p>
             </motion.footer>
 

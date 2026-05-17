@@ -6,10 +6,11 @@ import {
     updateDoc,
     deleteDoc,
     query,
-    orderBy,
     type Unsubscribe,
+    where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
+import { getTenantId, isDefaultTenant } from './tenant';
 
 export interface RegistryItem {
     id: string;
@@ -20,6 +21,7 @@ export interface RegistryItem {
     bought: boolean;
     boughtBy: string;
     order: number;
+    tenantId?: string;
 }
 
 export type NewRegistryItem = Omit<RegistryItem, 'id'>;
@@ -33,15 +35,46 @@ const COLLECTION = 'registryItems';
 export function subscribeToRegistryItems(
     callback: (items: RegistryItem[]) => void
 ): Unsubscribe {
-    const q = query(collection(db, COLLECTION), orderBy('order'));
+    const tenantId = getTenantId();
+    const qTenant = query(collection(db, COLLECTION), where('tenantId', '==', tenantId));
 
-    return onSnapshot(q, (snapshot) => {
-        const items: RegistryItem[] = snapshot.docs.map((doc) => ({
+    const state: { tenant?: RegistryItem[]; legacy?: RegistryItem[] } = {};
+
+    const emit = () => {
+        const merged = [...(state.tenant ?? []), ...(state.legacy ?? [])];
+        const byId = new Map<string, RegistryItem>();
+        merged.forEach((i) => byId.set(i.id, i));
+        const next = Array.from(byId.values()).sort((a, b) => (a.order - b.order) || 0);
+        callback(next);
+    };
+
+    const unsubTenant = onSnapshot(qTenant, (snapshot) => {
+        state.tenant = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
         })) as RegistryItem[];
-        callback(items);
+        emit();
     });
+
+    if (!isDefaultTenant(tenantId)) {
+        return () => {
+            unsubTenant();
+        };
+    }
+
+    const qLegacy = query(collection(db, COLLECTION), where('tenantId', '==', null));
+    const unsubLegacy = onSnapshot(qLegacy, (snapshot) => {
+        state.legacy = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        })) as RegistryItem[];
+        emit();
+    });
+
+    return () => {
+        unsubTenant();
+        unsubLegacy();
+    };
 }
 
 /**
@@ -64,7 +97,8 @@ export async function markItemAsBought(
  * Add a new registry item.
  */
 export async function addRegistryItem(item: NewRegistryItem): Promise<string> {
-    const docRef = await addDoc(collection(db, COLLECTION), item);
+    const tenantId = getTenantId();
+    const docRef = await addDoc(collection(db, COLLECTION), { ...item, tenantId });
     return docRef.id;
 }
 

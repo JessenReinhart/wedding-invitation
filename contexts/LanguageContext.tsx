@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
 import { translations, Language } from '@/translations';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 
 interface LanguageContextType {
     language: Language;
@@ -12,6 +13,7 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { getOverride } = useSiteConfig();
     const [language, setLanguage] = useState<Language>(() => {
         const params = new URLSearchParams(window.location.search);
         const lang = params.get('lang');
@@ -30,6 +32,9 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     }, []);
 
     const t = (path: string) => {
+        const override = getOverride(language, path);
+        if (override !== undefined) return override;
+
         const keys = path.split('.');
         let value: any = translations[language];
 

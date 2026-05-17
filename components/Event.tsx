@@ -2,9 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
 
 export const Event: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const { config } = useSiteConfig();
   const itineraryItems = t('event.items') as any[]; // Cast to array
 
   return (
@@ -19,7 +21,7 @@ export const Event: React.FC = () => {
         >
           <h2 className="font-display text-wine text-6xl md:text-8xl mb-4 text-center">{t('event.title')}</h2>
           <div className="h-24 w-px bg-wine/20 mb-4"></div>
-          <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine">{t('event.date')}</span>
+          <span className="font-sans text-xs tracking-[0.3em] uppercase text-wine">{config.wedding.dateLabel[language]}</span>
         </motion.div>
 
         <div className="grid grid-cols-1 border-t border-wine/10">

@@ -4,12 +4,19 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '../contexts/LanguageContext';
 import { useLoadingState } from '../contexts/LoadingContext';
 import { useMusic } from '../contexts/MusicContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
+import { getMonogram } from '@/services/siteConfig';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { t, isBatak, guestName } = useLanguage();
+  const { language, t, guestName } = useLanguage();
   const loadState = useLoadingState();
   const { play } = useMusic();
+  const { config } = useSiteConfig();
+  const monogram = getMonogram(config);
+  const brideName = config.couple.bride.displayName;
+  const groomName = config.couple.groom.displayName;
+  const dateLabel = config.wedding.dateLabel[language];
 
   const [isInvitationOpened, setIsInvitationOpened] = useState<boolean>(() => {
     try {
@@ -97,7 +104,7 @@ export const Hero: React.FC = () => {
                 layout
               >
                 <motion.span layout="position" className="font-display text-6xl md:text-8xl text-wine tracking-tighter leading-none">
-                  V & J
+                  {monogram.replace('&', ' & ')}
                 </motion.span>
 
                 {/* Divider doubles as loading bar */}
@@ -127,7 +134,7 @@ export const Hero: React.FC = () => {
                 </motion.div>
 
                 <motion.span layout="position" className="font-sans text-[10px] md:text-xs tracking-[0.5em] uppercase text-wine/50">
-                  02 · 05 · 2026
+                  {config.wedding.dateLabelShort[language]}
                 </motion.span>
 
                 <AnimatePresence>
@@ -216,7 +223,7 @@ export const Hero: React.FC = () => {
           <source media="(min-width: 1024px)" srcSet="/images/hero-landscae.png" fetchPriority="high" />
           <img
             src="/images/hero.jpg"
-            alt="Vita & Jessen"
+            alt={`${brideName} & ${groomName}`}
             className="w-full h-full object-cover object-[center_35%] lg:object-center"
             fetchPriority="high"
           />
@@ -266,7 +273,7 @@ export const Hero: React.FC = () => {
               className="font-display text-[clamp(3.5rem,15vw,8rem)] lg:text-[clamp(6rem,7vw,12rem)] leading-[0.85] tracking-tighter uppercase text-center transition-colors duration-1000"
 
             >
-              Jessen
+              {groomName}
             </motion.h1>
           </motion.div>
 
@@ -288,7 +295,7 @@ export const Hero: React.FC = () => {
               className="font-display text-[clamp(3.5rem,15vw,8rem)] lg:text-[clamp(6rem,7vw,12rem)] leading-[0.85] tracking-tighter uppercase text-center transition-colors duration-1000"
 
             >
-              Vita
+              {brideName}
             </motion.h1>
           </motion.div>
         </div>
@@ -300,7 +307,7 @@ export const Hero: React.FC = () => {
           transition={{ delay: 1.5, duration: 1 }}
           className="flex flex-col items-center justify-center gap-2 md:gap-3 text-[10px] md:text-[11px] font-sans tracking-[0.25em] md:tracking-[0.3em] uppercase text-center transition-colors duration-1000"
         >
-          <span className="font-semibold tracking-[0.4em] mb-1 drop-shadow-sm">02 MAY 2026</span>
+          <span className="font-semibold tracking-[0.4em] mb-1 drop-shadow-sm">{dateLabel}</span>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 opacity-90 drop-shadow-sm">
             <span>{t('hero.location')}</span>
             <span className={`hidden md:block w-1 h-1 rounded-full transition-colors duration-1000 ${loadState === 'loaded' ? 'bg-ivory/50' : 'bg-wine/50'}`}></span>

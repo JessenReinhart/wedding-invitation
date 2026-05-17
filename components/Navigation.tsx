@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useLoadingState } from '../contexts/LoadingContext';
+import { useSiteConfig } from '@/contexts/SiteConfigContext';
+import { getMonogram } from '@/services/siteConfig';
 
 export const Navigation: React.FC = () => {
   const [hidden, setHidden] = useState(false);
@@ -9,6 +11,8 @@ export const Navigation: React.FC = () => {
   const { scrollY } = useScroll();
   const { language, setLanguage, t } = useLanguage();
   const loadState = useLoadingState();
+  const { config } = useSiteConfig();
+  const monogram = getMonogram(config);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 50) {
@@ -58,7 +62,7 @@ export const Navigation: React.FC = () => {
 
     >
       <div className={`text-3xl lg:text-4xl font-display font-bold tracking-tighter md:justify-self-start transition-colors duration-500 ${isScrolled || loadState === 'timeout' ? 'text-wine' : 'text-ivory'}`}>
-        V&J
+        {monogram}
       </div>
 
       <div className="hidden md:flex gap-8 md:justify-self-center">
